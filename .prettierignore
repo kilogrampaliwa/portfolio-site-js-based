@@ -1,0 +1,11 @@
+node_modules
+.next
+dist
+build
+coverage
+playwright-report
+test-results
+pnpm-lock.yaml
+
+# Pre-existing planning docs, not reformatted by this project's tooling
+AI/
