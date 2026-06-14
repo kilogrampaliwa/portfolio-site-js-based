@@ -8,14 +8,16 @@
   "exports": {
     ".": "./dist/index.js",
     "./locale": "./dist/locale.js",
-    "./profile": "./dist/profile/index.js"
+    "./profile": "./dist/profile/index.js",
+    "./site": "./dist/site/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:db:profile": "vitest run --config vitest.integration.config.ts src/profile/rls.integration.test.ts"
+    "test:db:profile": "vitest run --config vitest.integration.config.ts src/profile/rls.integration.test.ts",
+    "test:db:site": "vitest run --config vitest.integration.config.ts src/site/rls.integration.test.ts"
   },
   "dependencies": {
     "zod": "^4.4.3"
