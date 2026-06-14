@@ -7,11 +7,6 @@
  * requested locale, decoupling consumers from the raw DB shape.
  */
 
-export type Locale = "en" | "pl";
-
-/** Raw shape of any i18n text field stored as jsonb in the database. */
-export type LocalizedText = Record<Locale, string>;
-
 export type Profile = {
   fullName: string;
   tagline: string;

@@ -99,3 +99,13 @@ values (
   'd4eef7393432c820b1b3b50d3db128b57de332d8a1348bf94ef739b986ecde40',
   'web'
 );
+
+-- Revoked test API key (apps/api-profile integration tests assert 401 for
+-- revoked keys). Raw value (sha-256 hashed below), not used anywhere:
+--   5f5e165b5e600e7302a6ef4997d3ebc0195e57593e45505157af4a545570d873
+insert into public.api_keys (key_hash, client_name, revoked_at)
+values (
+  '6fd41bc19b8007c79c63ae82fe054349e32fa44a0ff60579947b4f5ce1527f72',
+  'revoked-test-client',
+  now()
+);

@@ -1,11 +1,3 @@
-export type { Database, Json } from "./database";
-export type {
-  Certificate,
-  Education,
-  Experience,
-  Language,
-  Locale,
-  LocalizedText,
-  Profile,
-  Skill,
-} from "./domain";
+export type { Database, Json, Tables } from "./database";
+export type { Certificate, Education, Experience, Language, Profile, Skill } from "./domain";
+export type { Locale, LocalizedText } from "../locale";

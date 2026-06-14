@@ -1,0 +1,31 @@
+{
+  "name": "@portfolio/api-profile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "create-api-key": "tsx scripts/create-api-key.ts"
+  },
+  "dependencies": {
+    "@fastify/aws-lambda": "^6.4.0",
+    "@fastify/cors": "^11.2.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/rate-limit": "^11.0.0",
+    "@portfolio/shared-types": "workspace:*",
+    "@supabase/supabase-js": "^2.108.1",
+    "fastify": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.8"
+  }
+}
