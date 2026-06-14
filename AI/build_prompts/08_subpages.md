@@ -1,4 +1,4 @@
-# Layer 06 — Subpages
+# Layer 08 — Subpages
 
 ## Goal
 
@@ -7,9 +7,15 @@ Build out the full list/detail subpages: `/projects`, `/projects/[slug]`,
 
 ## Context
 
-Route skeletons exist from layer 04, "see all" links from layer 05 point here.
-`apps/api` (layer 03) provides list + detail endpoints with pagination for
-posts.
+Route skeletons exist from layer 06, "see all" links from layer 07 point
+here. Both API clients from layer 07 are reused:
+
+- `/projects`, `/projects/[slug]`, `/blog`, `/blog/[slug]` → `apiSite`
+  (`apps/api-site`, layer 05) — provides list + detail endpoints with
+  pagination for posts.
+- `/experience`, `/education`, `/certificates` → `apiProfile`
+  (`apps/api-profile`, layer 03) — fetched server-side with the first-party
+  API key, same as the homepage's Experience highlights.
 
 ## Tasks
 
@@ -22,15 +28,18 @@ posts.
      image. 404 page for unknown/unpublished slugs.
 
 3. **`/experience`, `/education`, `/certificates`**
-   - Timeline/list views, ordered by `order_index`, locale-aware. These can
-     share a layout component (tile/list pattern from the usermap).
+   - Timeline/list views, ordered by `order_index`, locale-aware, fetched via
+     `apiProfile` (server-side, API key attached). These can share a layout
+     component (tile/list pattern from the usermap).
 
 4. **`/blog`**
    - Paginated list of published posts (title, excerpt, date, tags), using
-     `/posts?page=&pageSize=`. Pagination controls (prev/next or numbered).
+     `apiSite` → `/posts?page=&pageSize=`. Pagination controls (prev/next or
+     numbered).
 
 5. **`/blog/[slug]`**
-   - Article view rendering `content` (markdown) from `/posts/:slug`.
+   - Article view rendering `content` (markdown) from `apiSite` →
+     `/posts/:slug`.
    - **Markdown rendering pipeline**: markdown → HTML via a safe pipeline
      (e.g. `remark` + `rehype` with `rehype-sanitize`, or `react-markdown`
      with a restricted/allow-listed component set). No raw
@@ -40,7 +49,8 @@ posts.
 6. **Shared list/tile/article components**
    - Factor the tile, list-item, and article-shell components so they're
      reused across `/projects`, `/experience`, `/education`, `/certificates`,
-     `/blog` per the usermap's "tiles, article, list" note.
+     `/blog` per the usermap's "tiles, article, list" note — regardless of
+     which API a given page's data comes from.
 
 ## Testing
 
@@ -52,9 +62,9 @@ posts.
   `javascript:` links) through the rendering pipeline and assert the
   dangerous parts are stripped while legitimate markdown (headings, links,
   code blocks, images) renders correctly.
-- **Integration**: full-stack test (Supabase + API + web, seeded data) for
-  each subpage — list pages show all seeded items, detail pages show correct
-  content, 404s for nonexistent slugs.
+- **Integration**: full-stack test (both Supabase projects + both APIs + web,
+  seeded data) for each subpage — list pages show all seeded items, detail
+  pages show correct content, 404s for nonexistent slugs.
 - **Playwright**: navigate from homepage "see all" links to each subpage,
   open a detail page, switch locale on a detail page (slug stays the same,
   content changes language), test pagination on `/blog` (next/prev page
@@ -66,7 +76,7 @@ posts.
   since `posts.content` is rich text that becomes HTML. Sanitization is
   mandatory and tested (above). Even though content is currently
   self-authored (via Supabase, not public input), defense-in-depth matters —
-  and this pipeline will matter more if layer 09 adds an admin editor.
+  and this pipeline will matter more if layer 11 adds an admin editor.
 - **404 handling**: ensure unpublished/draft posts and projects return a
   generic 404, not a 403 or an error revealing they exist but are
   unpublished (avoid leaking draft existence).
@@ -74,13 +84,15 @@ posts.
   post content links) open with `rel="noopener noreferrer"` and, if
   `target="_blank"`, consider `rel="nofollow"` for off-site links.
 - Continue validating all API responses against `packages/shared-types`
-  schemas before rendering.
+  schemas before rendering. Confirm `/experience`, `/education`,
+  `/certificates` fetches happen server-side only (API key never reaches the
+  browser).
 
 ## Out of scope (defer to later layers)
 
-- Visual polish/animations — layer 07.
+- Visual polish/animations — layer 09.
 - Search/filtering on `/blog` or `/projects` — not requested, treat as
-  future backlog (layer 09) if desired.
+  future backlog (layer 11) if desired.
 
 ## Acceptance criteria
 
@@ -88,5 +100,5 @@ posts.
 - Markdown sanitization tests pass — malicious payloads neutralized,
   legitimate formatting preserved.
 - `/blog` pagination works correctly with the seeded data (5+ posts from
-  layer 02 seed, exercising at least 2 pages with a small `pageSize`).
+  layer 04 seed, exercising at least 2 pages with a small `pageSize`).
 - Full Vitest + Playwright suites pass against the full local stack.

@@ -1,18 +1,26 @@
 # Portfolio Monorepo
 
-A personal portfolio website: a Next.js frontend, a custom Fastify API, and a
-shared Supabase Postgres database, deployed on AWS.
+A personal portfolio website: a Next.js frontend backed by two custom Fastify
+APIs and two Supabase Postgres projects (a universal profile/CV "brain" and a
+site-specific "brain" for projects/blog), deployed on AWS.
 
 ## Layout
+
+Target layout (built incrementally, see `AI/build_prompts/`). Currently only
+`apps/web` and a placeholder `apps/api` exist (layer 01); layer 03 splits
+`apps/api` into `apps/api-profile` + `apps/api-site`.
 
 ```
 /
 ├── apps/
 │   ├── web/              # Next.js frontend (App Router, TS, Tailwind, next-intl)
-│   └── api/              # Custom API (Node + TS + Fastify, Lambda-ready)
+│   ├── api-profile/      # Universal API (profile/CV), API-key gated, Lambda-ready
+│   └── api-site/         # Site-specific API (projects/posts), Lambda-ready
 ├── packages/
-│   └── shared-types/      # Zod schemas + TS types shared by web <-> api
-├── supabase/               # SQL migrations + seed data (added in a later layer)
+│   └── shared-types/      # Zod schemas + TS types shared by web <-> apis
+├── supabase/
+│   ├── profile/            # SQL migrations + seed data (profile brain, added in a later layer)
+│   └── site/                # SQL migrations + seed data (site brain, added in a later layer)
 ├── infra/                  # AWS CDK infrastructure (added in a later layer)
 └── AI/                     # Planning docs and build prompts
 ```

@@ -1,16 +1,17 @@
-# Layer 04 — Layout, Navigation & i18n
+# Layer 06 — Layout, Navigation & i18n
 
 ## Goal
 
 Build the site "shell": the welcome/landing experience, the main layout with
 topbar and navigation, and full English/Polish routing — all with placeholder
-or static content. Real data wiring happens in layers 05-06.
+or static content. Real data wiring happens in layers 07-08.
 
 ## Context
 
-`apps/web` exists from layer 01 with minimal next-intl config. `apps/api`
-(layer 03) is running and reachable, but this layer mostly uses static UI
-strings, not API data yet — focus is structure, routing, and i18n, not content.
+`apps/web` exists from layer 01 with minimal next-intl config. Both custom
+APIs are running and reachable (`apps/api-profile` from layer 03,
+`apps/api-site` from layer 05), but this layer mostly uses static UI strings,
+not API data yet — focus is structure, routing, and i18n, not content.
 
 ## Reference layout (from `AI/proposed_structure/proposed_usermap.md`)
 
@@ -22,7 +23,7 @@ strings, not API data yet — focus is structure, routing, and i18n, not content
   - The bar itself: dropdown navigation — Projects / Experience / Education /
     Certificates, plus a direct link to Blog.
 - **Subpages**: share the same topbar/layout; content area renders
-  tiles/lists/articles (built in layer 06).
+  tiles/lists/articles (built in layer 08).
 
 ## Tasks
 
@@ -45,7 +46,7 @@ strings, not API data yet — focus is structure, routing, and i18n, not content
      Certificates / Blog — links to route placeholders.
    - Footer (minimal — can be expanded later).
 
-4. **Route skeletons** (placeholder pages, real content in layer 06)
+4. **Route skeletons** (placeholder pages, real content in layer 08)
    - `/[locale]/projects`, `/[locale]/blog`, `/[locale]/experience`,
      `/[locale]/education`, `/[locale]/certificates` — each just renders a
      heading via the layout, proving routing + i18n + nav all connect.
@@ -69,16 +70,18 @@ strings, not API data yet — focus is structure, routing, and i18n, not content
 - No user input/forms yet, so limited new attack surface. Still:
   - Add `@vercel/next`-appropriate security headers (or Next's built-in
     `headers()` in `next.config`) — at minimum a baseline CSP that allows
-    only known sources (self + the API origin), `X-Frame-Options`,
+    only known sources (self + both API origins), `X-Frame-Options`,
     `Referrer-Policy`.
-  - Confirm `NEXT_PUBLIC_API_URL` is the only env var exposed to the browser
-    (no secrets in `NEXT_PUBLIC_*`).
+  - Confirm `NEXT_PUBLIC_PROFILE_API_URL` and `NEXT_PUBLIC_SITE_API_URL` are
+    the only env vars exposed to the browser (no secrets, no API keys, in
+    `NEXT_PUBLIC_*`).
 
 ## Out of scope (defer to later layers)
 
-- Real content/data fetching from `apps/api` — layers 05-06.
-- Visual polish, animations, dark mode — layer 07.
-- Contact form — layer 09 (backlog).
+- Real content/data fetching from `apps/api-profile` / `apps/api-site` —
+  layers 07-08.
+- Visual polish, animations, dark mode — layer 09.
+- Contact form — layer 11 (backlog).
 
 ## Acceptance criteria
 
@@ -87,4 +90,4 @@ strings, not API data yet — focus is structure, routing, and i18n, not content
 - Language switcher preserves the current route across locales.
 - Playwright suite (landing, nav, locale switch, keyboard nav) passes.
 - Lighthouse accessibility score for the shell is reasonable (no critical
-  issues) — spot-check, full audit comes in layer 07.
+  issues) — spot-check, full audit comes in layer 09.

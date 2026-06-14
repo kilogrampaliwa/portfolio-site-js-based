@@ -7,13 +7,19 @@ features yet — just a working, well-organized skeleton that runs.
 
 ## Context
 
-This is a portfolio website project. Final architecture: a Next.js frontend
-(`apps/web`) that talks to a custom API (`apps/api`), which in turn talks to
-Supabase (the data "brain"). Both apps share types/schemas via
-`packages/shared-types`. The repo will eventually be deployed to AWS
-(Amplify for the frontend, Lambda for the API), and supports English + Polish
-via next-intl. None of that is built yet — just set up the structure so those
-pieces can be added without restructuring later.
+This is a portfolio website project. Final architecture (see
+`00_overview.md` for the authoritative, current version): a Next.js frontend
+(`apps/web`) that talks to two custom APIs — `apps/api-profile` (universal,
+API-key-gated, over a profile/CV Supabase project) and `apps/api-site`
+(site-only, over a separate site-content Supabase project). All apps share
+types/schemas via `packages/shared-types`. The repo will eventually be
+deployed to AWS (Amplify for the frontend, Lambda for each API), and supports
+English + Polish via next-intl. None of that is built yet — this layer only
+sets up a single `apps/api` skeleton as a starting point; layer 03 renames it
+to `apps/api-site` and adds `apps/api-profile` as a sibling once the two-API
+split is needed. None of the rest of the structure is built yet either — just
+set up the foundation so those pieces can be added without restructuring
+later.
 
 ## Tasks
 
@@ -28,7 +34,7 @@ pieces can be added without restructuring later.
    - Next.js 14+, TypeScript, App Router, Tailwind CSS.
    - Install and configure `next-intl` for locales `en` and `pl` (default `en`),
      but only the minimal config needed to compile — full routing/UI comes in
-     layer 04. It's fine if the only visible result is a placeholder page under
+     layer 06. It's fine if the only visible result is a placeholder page under
      `/[locale]`.
    - Basic folder structure: `src/app`, `src/components`, `src/lib`.
    - `.env.example` with placeholders for the future API base URL
@@ -40,7 +46,7 @@ pieces can be added without restructuring later.
    - Structure the entry point so it can run as a normal local server (`pnpm dev`)
      AND be wrapped by a Lambda handler later (e.g. separate `src/server.ts` for
      local dev and `src/app.ts` exporting the Fastify instance, so a Lambda
-     adapter can be added in layer 08 without restructuring).
+     adapter can be added in layer 10 without restructuring).
    - `.env.example` with placeholders for Supabase URL/keys (no real values).
 
 4. **`packages/shared-types`**
@@ -63,7 +69,7 @@ pieces can be added without restructuring later.
   placeholder type's shape via a runtime check or type-level test).
 - Scaffold **Playwright** in `apps/web` (`playwright.config.ts`, `e2e/` folder)
   with one smoke test that loads `/en` and checks the page responds with 200.
-  Real E2E coverage starts in layer 04 once there's navigable UI.
+  Real E2E coverage starts in layer 06 once there's navigable UI.
 - Root `pnpm test` runs Vitest across all packages. Playwright runs via its own
   script (e.g. `pnpm --filter web test:e2e`) since it needs a running server.
 
@@ -72,13 +78,13 @@ pieces can be added without restructuring later.
 - `.env` files are gitignored in both apps; only `.env.example` (no real
   secrets) is committed.
 - Add a root `pnpm audit` (or equivalent) script as a baseline dependency
-  vulnerability check — wired into CI in layer 08.
+  vulnerability check — wired into CI in layer 10.
 - No real secrets exist yet at this layer, but establish the convention now so
   later layers don't introduce shortcuts.
 
 ## Out of scope (defer to later layers)
 
-- Any real UI/content (layout, navigation, sections) — layer 04+.
+- Any real UI/content (layout, navigation, sections) — layer 06+.
 - Supabase schema/connection — layer 02.
 - Real API endpoints beyond `/health` — layer 03.
 - AWS/deployment config — layer 08.

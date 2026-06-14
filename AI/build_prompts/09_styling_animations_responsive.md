@@ -1,10 +1,10 @@
-# Layer 07 — Styling, Animations & Responsiveness
+# Layer 09 — Styling, Animations & Responsiveness
 
 ## Goal
 
 Polish the visual design: consistent theme, dark/light mode, responsive
 layouts, and scroll/transition animations — without changing functionality
-built in layers 04-06.
+built in layers 06-08.
 
 ## Context
 
@@ -24,7 +24,7 @@ changes.
      default). Apply across all components built so far.
 
 3. **Responsive layouts**
-   - Audit every page/section from layers 04-06 at mobile, tablet, desktop
+   - Audit every page/section from layers 06-08 at mobile, tablet, desktop
      breakpoints. Topbar/dropdown nav must work well on mobile (e.g. collapse
      to a menu button).
 
@@ -55,7 +55,7 @@ changes.
 
 ## Security
 
-- No new data flows, but re-run the CSP/security headers check from layer 04
+- No new data flows, but re-run the CSP/security headers check from layer 06
   — animation libraries sometimes need inline styles; ensure CSP is adjusted
   deliberately (e.g. `style-src 'self' 'unsafe-inline'` only if truly needed)
   rather than loosened broadly.
@@ -65,7 +65,7 @@ changes.
 ## Out of scope (defer to later layers)
 
 - New features/content — none planned for this layer.
-- AWS deployment — layer 08.
+- AWS deployment — layer 10.
 
 ## Acceptance criteria
 
@@ -76,4 +76,4 @@ changes.
 - Full Vitest + Playwright suite (including new visual/responsive/reduced-
   motion tests) passes.
 - Lighthouse (mobile) run shows reasonable performance/accessibility scores —
-  note any regressions vs. layer 04's baseline and address obvious ones.
+  note any regressions vs. layer 06's baseline and address obvious ones.

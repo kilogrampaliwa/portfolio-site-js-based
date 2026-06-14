@@ -78,8 +78,12 @@ Scaffolded the full monorepo per `AI/build_prompts/01_foundation_setup.md`:
 
 ## Next step
 
-- Layer 02 (`AI/build_prompts/02_data_layer_supabase.md`): Supabase schema,
-  RLS policies, seed data, generated types into `packages/shared-types`.
+- Layer 02 (`AI/build_prompts/02_data_layer_profile_db.md`): profile/CV
+  Supabase project schema, RLS policies, seed data, generated types into
+  `packages/shared-types`. (Note: the architecture was revised on 2026-06-14
+  to split into two Supabase projects/two APIs — see
+  `AI/fingerprint/2026-06-14_two-database-architecture-revision.md` and the
+  renumbered `00_overview.md` layer sequence, 01-11.)
 - Before starting layer 02: confirm with the user (per `starting_prompt.md`
   working rules) and note that it will need a Supabase project + Docker for
   local Supabase CLI per the prerequisites in `00_overview.md`.
