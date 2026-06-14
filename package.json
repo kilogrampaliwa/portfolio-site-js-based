@@ -11,6 +11,7 @@
     "build": "pnpm -r run build",
     "lint": "pnpm -r run lint",
     "test": "pnpm -r run test",
+    "test:db:profile": "pnpm --filter @portfolio/shared-types test:db:profile",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "audit": "pnpm audit"

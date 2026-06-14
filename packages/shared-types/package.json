@@ -6,15 +6,18 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./profile": "./dist/profile/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:db:profile": "vitest run --config vitest.integration.config.ts src/profile/rls.integration.test.ts"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.108.1",
     "typescript": "^5.7.2",
     "vitest": "^4.1.8"
   }
