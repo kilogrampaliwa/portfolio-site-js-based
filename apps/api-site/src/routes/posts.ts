@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { PaginatedPosts } from "@portfolio/shared-types/site";
+import type { BlogPost, PaginatedPosts } from "@portfolio/shared-types/site";
 import { supabase } from "../lib/supabaseClient";
 import { getLocale } from "../lib/locale";
 import { AppError } from "../lib/errors";
