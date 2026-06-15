@@ -69,9 +69,24 @@ importers:
 
   apps/api-site:
     dependencies:
+      '@fastify/aws-lambda':
+        specifier: ^6.4.0
+        version: 6.4.0
+      '@fastify/cors':
+        specifier: ^11.2.0
+        version: 11.2.0
+      '@fastify/helmet':
+        specifier: ^13.0.2
+        version: 13.0.2
+      '@fastify/rate-limit':
+        specifier: ^11.0.0
+        version: 11.0.0
       '@portfolio/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
+      '@supabase/supabase-js':
+        specifier: ^2.108.1
+        version: 2.108.1
       fastify:
         specifier: ^5.2.0
         version: 5.8.5

@@ -30,3 +30,12 @@ export type BlogPost = {
   tags: string[];
   publishedAt: string | null;
 };
+
+/** Paginated `GET /posts` response. */
+export type PaginatedPosts = {
+  items: BlogPost[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
