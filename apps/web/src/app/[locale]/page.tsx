@@ -1,17 +1,35 @@
-import { useTranslations } from "next-intl";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@portfolio/shared-types/locale";
+import { getExperience, getProfile } from "@/lib/apiProfile";
+import { getFeaturedProjects, getLatestPosts } from "@/lib/apiSite";
+import { Hero } from "@/components/sections/hero";
+import { About } from "@/components/sections/about";
+import { ExperienceHighlights } from "@/components/sections/experience-highlights";
+import { FeaturedProjects } from "@/components/sections/featured-projects";
+import { LatestPosts } from "@/components/sections/latest-posts";
+import { Contact } from "@/components/sections/contact";
 
-export default function HomePage() {
-  const t = useTranslations("Landing");
+const EXPERIENCE_HIGHLIGHT_COUNT = 3;
+const LATEST_POSTS_COUNT = 3;
+
+export default async function HomePage() {
+  const locale = (await getLocale()) as Locale;
+
+  const [profile, experience, featuredProjects, latestPosts] = await Promise.all([
+    getProfile(locale),
+    getExperience(locale),
+    getFeaturedProjects(locale),
+    getLatestPosts(locale, LATEST_POSTS_COUNT),
+  ]);
 
   return (
-    <section className="flex min-h-screen flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
-      <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-zinc-50">
-        {t("greeting")}
-      </h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">{t("hint")}</p>
-      <a href="#site-footer" aria-label={t("scrollLabel")} className="mt-4 animate-bounce text-3xl">
-        ↓
-      </a>
-    </section>
+    <>
+      <Hero profile={profile} />
+      <About bio={profile?.bio ?? null} />
+      <ExperienceHighlights items={experience.slice(0, EXPERIENCE_HIGHLIGHT_COUNT)} />
+      <FeaturedProjects projects={featuredProjects} />
+      <LatestPosts posts={latestPosts} />
+      <Contact email={profile?.email ?? null} socialLinks={profile?.socialLinks ?? {}} />
+    </>
   );
 }

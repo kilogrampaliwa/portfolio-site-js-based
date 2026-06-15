@@ -1,8 +1,34 @@
 {
-  "Landing": {
-    "greeting": "Welcome here!",
-    "hint": "Scroll down for more",
-    "scrollLabel": "Scroll to main content"
+  "Home": {
+    "hero": {
+      "fallbackName": "Jane Doe",
+      "fallbackTagline": "Welcome to my portfolio",
+      "scrollLabel": "Scroll to learn more"
+    },
+    "about": {
+      "title": "About",
+      "unavailable": "Bio coming soon."
+    },
+    "experience": {
+      "title": "Experience",
+      "empty": "Experience details coming soon.",
+      "present": "Present",
+      "seeAll": "See all experience"
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "empty": "Featured projects coming soon.",
+      "seeAll": "See all projects"
+    },
+    "posts": {
+      "title": "Latest Posts",
+      "empty": "Blog posts coming soon.",
+      "seeAll": "See all posts"
+    },
+    "contact": {
+      "title": "Contact",
+      "unavailable": "Contact details coming soon."
+    }
   },
   "Nav": {
     "brand": "Jane Doe",

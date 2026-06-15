@@ -25,3 +25,46 @@ export const slugParamSchema = z.object({
 });
 
 export type SlugParam = z.infer<typeof slugParamSchema>;
+
+/**
+ * Zod schemas validating the *resolved* (single-locale) response shapes
+ * returned by the site API (apps/api-site, layer 05). Used by API consumers
+ * (e.g. apps/web, layer 07) to fail safely if a response doesn't match the
+ * expected shape, rather than rendering raw unvalidated data.
+ *
+ * Keep in sync with the hand-written types in ./domain.ts.
+ */
+
+export const projectSchema = z.object({
+  id: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  description: z.string(),
+  techStack: z.array(z.string()),
+  link: z.string().nullable(),
+  repoUrl: z.string().nullable(),
+  imageUrl: z.string().nullable(),
+  featured: z.boolean(),
+  orderIndex: z.number(),
+  publishedAt: z.string().nullable(),
+});
+
+export const projectsListSchema = z.array(projectSchema);
+
+export const blogPostSchema = z.object({
+  id: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string(),
+  content: z.string(),
+  tags: z.array(z.string()),
+  publishedAt: z.string().nullable(),
+});
+
+export const paginatedPostsSchema = z.object({
+  items: z.array(blogPostSchema),
+  page: z.number(),
+  pageSize: z.number(),
+  total: z.number(),
+  totalPages: z.number(),
+});

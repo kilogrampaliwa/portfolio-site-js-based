@@ -1,29 +1,88 @@
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import HomePage from "./page";
 
-vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) => {
-    const messages: Record<string, string> = {
-      greeting: "Welcome here!",
-      hint: "Scroll down for more",
-      scrollLabel: "Scroll to main content",
-    };
-    return messages[key] ?? key;
+vi.mock("server-only", () => ({}));
+
+const messages: Record<string, Record<string, string>> = {
+  "Home.hero": {
+    fallbackName: "Jane Doe",
+    fallbackTagline: "Welcome to my portfolio",
+    scrollLabel: "Scroll to learn more",
   },
+  "Home.about": { title: "About", unavailable: "Bio coming soon." },
+  "Home.experience": {
+    title: "Experience",
+    empty: "Experience details coming soon.",
+    present: "Present",
+    seeAll: "See all experience",
+  },
+  "Home.projects": {
+    title: "Featured Projects",
+    empty: "Featured projects coming soon.",
+    seeAll: "See all projects",
+  },
+  "Home.posts": { title: "Latest Posts", empty: "Blog posts coming soon.", seeAll: "See all posts" },
+  "Home.contact": { title: "Contact", unavailable: "Contact details coming soon." },
+};
+
+vi.mock("next-intl", () => ({
+  useTranslations: (namespace: string) => (key: string) => messages[namespace]?.[key] ?? key,
+}));
+
+vi.mock("next-intl/server", () => ({
+  getLocale: async () => "en",
+}));
+
+type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href: string;
+  children: ReactNode;
+};
+
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({ href, children, ...rest }: MockLinkProps) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
+}));
+
+const profileFixture = vi.hoisted(() => ({
+  fullName: "Ada Lovelace",
+  tagline: "Software pioneer",
+  bio: "I build things.",
+  email: "ada@example.com",
+  socialLinks: { GitHub: "https://github.com/ada" },
+  avatarUrl: null,
+  updatedAt: "2024-01-01T00:00:00.000Z",
+}));
+
+vi.mock("@/lib/apiProfile", () => ({
+  getProfile: vi.fn().mockResolvedValue(profileFixture),
+  getExperience: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock("@/lib/apiSite", () => ({
+  getFeaturedProjects: vi.fn().mockResolvedValue([]),
+  getLatestPosts: vi.fn().mockResolvedValue([]),
 }));
 
 describe("HomePage", () => {
-  it("renders the welcome heading", () => {
-    render(<HomePage />);
-    expect(screen.getByRole("heading", { name: "Welcome here!" })).toBeInTheDocument();
-  });
+  it("renders all six homepage sections with fetched data", async () => {
+    render(await HomePage());
 
-  it("renders a scroll-down link into the main content", () => {
-    render(<HomePage />);
-    expect(screen.getByRole("link", { name: "Scroll to main content" })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: "Ada Lovelace" })).toBeInTheDocument();
+    expect(screen.getByText("Software pioneer")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
+    expect(screen.getByText("I build things.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Featured Projects" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Latest Posts" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "ada@example.com" })).toHaveAttribute(
       "href",
-      "#site-footer",
+      "mailto:ada@example.com",
     );
   });
 });
