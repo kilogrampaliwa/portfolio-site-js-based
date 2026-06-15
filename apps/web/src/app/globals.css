@@ -24,3 +24,55 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.markdown-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+}
+
+.markdown-content a {
+  text-decoration: underline;
+}
+
+.markdown-content pre {
+  overflow-x: auto;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+
+.markdown-content code {
+  font-family: var(--font-mono);
+}
+
+.markdown-content img {
+  max-width: 100%;
+}
+
+.markdown-content blockquote {
+  border-left: 2px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  padding-left: 1rem;
+  color: color-mix(in srgb, var(--foreground) 70%, transparent);
+}

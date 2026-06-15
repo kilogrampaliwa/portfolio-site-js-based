@@ -45,18 +45,46 @@
     "rights": "All rights reserved."
   },
   "ProjectsPage": {
-    "title": "Projects"
+    "title": "Projects",
+    "empty": "Projects coming soon.",
+    "details": "View details",
+    "live": "Live",
+    "repo": "Repository"
+  },
+  "ProjectDetailPage": {
+    "back": "Back to projects",
+    "techStack": "Tech stack",
+    "live": "Live demo",
+    "repo": "Repository"
   },
   "BlogPage": {
-    "title": "Blog"
+    "title": "Blog",
+    "empty": "Blog posts coming soon.",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "BlogPostPage": {
+    "back": "Back to blog"
   },
   "ExperiencePage": {
-    "title": "Experience"
+    "title": "Experience",
+    "empty": "Experience details coming soon.",
+    "present": "Present"
   },
   "EducationPage": {
-    "title": "Education"
+    "title": "Education",
+    "empty": "Education details coming soon.",
+    "present": "Present"
   },
   "CertificatesPage": {
-    "title": "Certificates"
+    "title": "Certificates",
+    "empty": "Certificates coming soon.",
+    "expires": "Expires",
+    "credential": "View credential"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or is no longer available.",
+    "backHome": "Back to home"
   }
 }

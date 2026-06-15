@@ -32,3 +32,28 @@ export const experienceSchema = z.object({
 });
 
 export const experienceListSchema = z.array(experienceSchema);
+
+export const educationSchema = z.object({
+  id: z.string(),
+  institution: z.string(),
+  degree: z.string(),
+  field: z.string().nullable(),
+  startDate: z.string(),
+  endDate: z.string().nullable(),
+  description: z.string(),
+  orderIndex: z.number(),
+});
+
+export const educationListSchema = z.array(educationSchema);
+
+export const certificateSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  issuer: z.string(),
+  issueDate: z.string(),
+  expiryDate: z.string().nullable(),
+  credentialUrl: z.string().nullable(),
+  orderIndex: z.number(),
+});
+
+export const certificateListSchema = z.array(certificateSchema);

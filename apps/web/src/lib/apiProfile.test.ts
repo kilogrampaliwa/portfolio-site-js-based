@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
 
-import { getExperience, getProfile } from "./apiProfile";
+import { getCertificates, getEducation, getExperience, getProfile } from "./apiProfile";
 
 const validProfile = {
   fullName: "Ada Lovelace",
@@ -23,6 +23,31 @@ const validExperience = [
     startDate: "2020-01-01",
     endDate: null,
     description: "Did things.",
+    orderIndex: 0,
+  },
+];
+
+const validEducation = [
+  {
+    id: "1",
+    institution: "State University",
+    degree: "B.Sc. Computer Science",
+    field: null,
+    startDate: "2014-09-01",
+    endDate: "2018-06-01",
+    description: "Studied computer science.",
+    orderIndex: 0,
+  },
+];
+
+const validCertificates = [
+  {
+    id: "1",
+    name: "Certified Example",
+    issuer: "Example Org",
+    issueDate: "2022-01-01",
+    expiryDate: null,
+    credentialUrl: "https://example.com/credential",
     orderIndex: 0,
   },
 ];
@@ -96,6 +121,38 @@ describe("apiProfile", () => {
       vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
 
       expect(await getExperience("en")).toEqual([]);
+    });
+  });
+
+  describe("getEducation", () => {
+    it("returns the parsed education list", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(
+        new Response(JSON.stringify(validEducation), { status: 200 }),
+      );
+
+      expect(await getEducation("en")).toEqual(validEducation);
+    });
+
+    it("returns an empty array on error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
+
+      expect(await getEducation("en")).toEqual([]);
+    });
+  });
+
+  describe("getCertificates", () => {
+    it("returns the parsed certificate list", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(
+        new Response(JSON.stringify(validCertificates), { status: 200 }),
+      );
+
+      expect(await getCertificates("en")).toEqual(validCertificates);
+    });
+
+    it("returns an empty array on error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
+
+      expect(await getCertificates("en")).toEqual([]);
     });
   });
 });

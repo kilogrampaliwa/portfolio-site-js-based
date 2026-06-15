@@ -1,5 +1,10 @@
-import { paginatedPostsSchema, projectsListSchema } from "@portfolio/shared-types/site";
-import type { BlogPost, Project } from "@portfolio/shared-types/site";
+import {
+  blogPostSchema,
+  paginatedPostsSchema,
+  projectSchema,
+  projectsListSchema,
+} from "@portfolio/shared-types/site";
+import type { BlogPost, PaginatedPosts, Project } from "@portfolio/shared-types/site";
 import type { Locale } from "@portfolio/shared-types/locale";
 
 /**
@@ -49,5 +54,49 @@ export async function getLatestPosts(locale: Locale, pageSize: number): Promise<
     return result.success ? result.data.items : [];
   } catch {
     return [];
+  }
+}
+
+export async function getProjects(locale: Locale): Promise<Project[]> {
+  try {
+    const data = await fetchSiteApi("/projects", { locale });
+    const result = projectsListSchema.safeParse(data);
+    return result.success ? result.data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getProjectBySlug(locale: Locale, slug: string): Promise<Project | null> {
+  try {
+    const data = await fetchSiteApi(`/projects/${encodeURIComponent(slug)}`, { locale });
+    const result = projectSchema.safeParse(data);
+    return result.success ? result.data : null;
+  } catch {
+    return null;
+  }
+}
+
+function emptyPaginatedPosts(page: number, pageSize: number): PaginatedPosts {
+  return { items: [], page, pageSize, total: 0, totalPages: 0 };
+}
+
+export async function getPosts(locale: Locale, page: number, pageSize: number): Promise<PaginatedPosts> {
+  try {
+    const data = await fetchSiteApi("/posts", { locale, page: String(page), pageSize: String(pageSize) });
+    const result = paginatedPostsSchema.safeParse(data);
+    return result.success ? result.data : emptyPaginatedPosts(page, pageSize);
+  } catch {
+    return emptyPaginatedPosts(page, pageSize);
+  }
+}
+
+export async function getPostBySlug(locale: Locale, slug: string): Promise<BlogPost | null> {
+  try {
+    const data = await fetchSiteApi(`/posts/${encodeURIComponent(slug)}`, { locale });
+    const result = blogPostSchema.safeParse(data);
+    return result.success ? result.data : null;
+  } catch {
+    return null;
   }
 }

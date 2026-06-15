@@ -1,6 +1,11 @@
 import "server-only";
-import { experienceListSchema, profileSchema } from "@portfolio/shared-types/profile";
-import type { Experience, Profile } from "@portfolio/shared-types/profile";
+import {
+  certificateListSchema,
+  educationListSchema,
+  experienceListSchema,
+  profileSchema,
+} from "@portfolio/shared-types/profile";
+import type { Certificate, Education, Experience, Profile } from "@portfolio/shared-types/profile";
 import type { Locale } from "@portfolio/shared-types/locale";
 
 /**
@@ -49,6 +54,26 @@ export async function getExperience(locale: Locale): Promise<Experience[]> {
   try {
     const data = await fetchProfileApi("/experience", locale);
     const result = experienceListSchema.safeParse(data);
+    return result.success ? result.data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getEducation(locale: Locale): Promise<Education[]> {
+  try {
+    const data = await fetchProfileApi("/education", locale);
+    const result = educationListSchema.safeParse(data);
+    return result.success ? result.data : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getCertificates(locale: Locale): Promise<Certificate[]> {
+  try {
+    const data = await fetchProfileApi("/certificates", locale);
+    const result = certificateListSchema.safeParse(data);
     return result.success ? result.data : [];
   } catch {
     return [];

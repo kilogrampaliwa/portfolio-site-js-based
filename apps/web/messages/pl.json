@@ -45,18 +45,46 @@
     "rights": "Wszelkie prawa zastrzeżone."
   },
   "ProjectsPage": {
-    "title": "Projekty"
+    "title": "Projekty",
+    "empty": "Projekty wkrótce się pojawią.",
+    "details": "Zobacz szczegóły",
+    "live": "Demo",
+    "repo": "Repozytorium"
+  },
+  "ProjectDetailPage": {
+    "back": "Wróć do projektów",
+    "techStack": "Stos technologiczny",
+    "live": "Demo na żywo",
+    "repo": "Repozytorium"
   },
   "BlogPage": {
-    "title": "Blog"
+    "title": "Blog",
+    "empty": "Wpisy na blogu wkrótce się pojawią.",
+    "previous": "Poprzednia",
+    "next": "Następna"
+  },
+  "BlogPostPage": {
+    "back": "Wróć do bloga"
   },
   "ExperiencePage": {
-    "title": "Doświadczenie"
+    "title": "Doświadczenie",
+    "empty": "Szczegóły doświadczenia wkrótce się pojawią.",
+    "present": "Obecnie"
   },
   "EducationPage": {
-    "title": "Edukacja"
+    "title": "Edukacja",
+    "empty": "Szczegóły edukacji wkrótce się pojawią.",
+    "present": "Obecnie"
   },
   "CertificatesPage": {
-    "title": "Certyfikaty"
+    "title": "Certyfikaty",
+    "empty": "Certyfikaty wkrótce się pojawią.",
+    "expires": "Wygasa",
+    "credential": "Zobacz certyfikat"
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "description": "Strona, której szukasz, nie istnieje lub nie jest już dostępna.",
+    "backHome": "Wróć na stronę główną"
   }
 }

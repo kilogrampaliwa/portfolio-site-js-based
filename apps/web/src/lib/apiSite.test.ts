@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getFeaturedProjects, getLatestPosts } from "./apiSite";
+import { getFeaturedProjects, getLatestPosts, getPostBySlug, getPosts, getProjectBySlug, getProjects } from "./apiSite";
 
 const validProject = {
   id: "1",
@@ -86,6 +86,83 @@ describe("apiSite", () => {
       vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
 
       expect(await getLatestPosts("en", 3)).toEqual([]);
+    });
+  });
+
+  describe("getProjects", () => {
+    it("returns the parsed project list, requesting the locale", async () => {
+      const fetchMock = vi
+        .spyOn(global, "fetch")
+        .mockResolvedValue(new Response(JSON.stringify([validProject]), { status: 200 }));
+
+      expect(await getProjects("pl")).toEqual([validProject]);
+
+      const [url] = fetchMock.mock.calls[0];
+      expect(String(url)).toBe("http://localhost:3002/projects?locale=pl");
+    });
+
+    it("returns an empty array on error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
+
+      expect(await getProjects("en")).toEqual([]);
+    });
+  });
+
+  describe("getProjectBySlug", () => {
+    it("returns the parsed project, requesting the slug and locale", async () => {
+      const fetchMock = vi
+        .spyOn(global, "fetch")
+        .mockResolvedValue(new Response(JSON.stringify(validProject), { status: 200 }));
+
+      expect(await getProjectBySlug("pl", "demo")).toEqual(validProject);
+
+      const [url] = fetchMock.mock.calls[0];
+      expect(String(url)).toBe("http://localhost:3002/projects/demo?locale=pl");
+    });
+
+    it("returns null on a 404", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("not found", { status: 404 }));
+
+      expect(await getProjectBySlug("en", "missing")).toBeNull();
+    });
+  });
+
+  describe("getPosts", () => {
+    it("returns the full paginated response, requesting page/pageSize/locale", async () => {
+      const fetchMock = vi
+        .spyOn(global, "fetch")
+        .mockResolvedValue(new Response(JSON.stringify(validPaginatedPosts), { status: 200 }));
+
+      expect(await getPosts("en", 1, 3)).toEqual(validPaginatedPosts);
+
+      const [url] = fetchMock.mock.calls[0];
+      expect(String(url)).toBe("http://localhost:3002/posts?locale=en&page=1&pageSize=3");
+    });
+
+    it("returns an empty page (preserving page/pageSize) on error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
+
+      expect(await getPosts("en", 2, 3)).toEqual({ items: [], page: 2, pageSize: 3, total: 0, totalPages: 0 });
+    });
+  });
+
+  describe("getPostBySlug", () => {
+    it("returns the parsed post, requesting the slug and locale", async () => {
+      const post = validPaginatedPosts.items[0];
+      const fetchMock = vi
+        .spyOn(global, "fetch")
+        .mockResolvedValue(new Response(JSON.stringify(post), { status: 200 }));
+
+      expect(await getPostBySlug("pl", "hello-world")).toEqual(post);
+
+      const [url] = fetchMock.mock.calls[0];
+      expect(String(url)).toBe("http://localhost:3002/posts/hello-world?locale=pl");
+    });
+
+    it("returns null on a 404", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue(new Response("not found", { status: 404 }));
+
+      expect(await getPostBySlug("en", "missing")).toBeNull();
     });
   });
 });
