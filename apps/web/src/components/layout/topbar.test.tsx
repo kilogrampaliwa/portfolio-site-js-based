@@ -14,6 +14,8 @@ const messages: Record<string, Record<string, string>> = {
     certificates: "Certificates",
     blog: "Blog",
     languageLabel: "Language",
+    switchToDark: "Switch to dark theme",
+    switchToLight: "Switch to light theme",
   },
 };
 
@@ -54,6 +56,12 @@ describe("Topbar", () => {
     expect(screen.getByRole("menuitem", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("menuitem", { name: "Education" })).toBeInTheDocument();
     expect(screen.getByRole("menuitem", { name: "Certificates" })).toBeInTheDocument();
+  });
+
+  it("renders a theme toggle button", () => {
+    render(<Topbar />);
+
+    expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
   });
 
   it("closes the dropdown on Escape and refocuses the trigger button", () => {

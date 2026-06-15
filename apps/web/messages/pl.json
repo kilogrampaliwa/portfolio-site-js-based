@@ -39,7 +39,9 @@
     "education": "Edukacja",
     "certificates": "Certyfikaty",
     "blog": "Blog",
-    "languageLabel": "Język"
+    "languageLabel": "Język",
+    "switchToDark": "Przełącz na ciemny motyw",
+    "switchToLight": "Przełącz na jasny motyw"
   },
   "Footer": {
     "rights": "Wszelkie prawa zastrzeżone."

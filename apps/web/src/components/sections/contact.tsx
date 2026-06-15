@@ -1,4 +1,7 @@
+"use client";
+
 import { useTranslations } from "next-intl";
+import { RevealSection } from "@/components/motion/reveal-section";
 
 type ContactProps = {
   email: string | null;
@@ -10,7 +13,7 @@ export function Contact({ email, socialLinks }: ContactProps) {
   const links = Object.entries(socialLinks);
 
   return (
-    <section id="contact" className="flex flex-1 flex-col gap-4 px-6 py-16">
+    <RevealSection id="contact" className="flex flex-1 flex-col gap-4 px-6 py-16">
       <h2 className="text-2xl font-semibold tracking-tight">{t("title")}</h2>
       {email ? (
         <a href={`mailto:${email}`} className="text-sm font-medium underline">
@@ -35,6 +38,6 @@ export function Contact({ email, socialLinks }: ContactProps) {
           ))}
         </ul>
       )}
-    </section>
+    </RevealSection>
   );
 }

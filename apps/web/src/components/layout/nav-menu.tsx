@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
@@ -52,8 +53,11 @@ export function NavMenu() {
           {t("menuLabel")}
         </button>
         {open && (
-          <ul
+          <motion.ul
             role="menu"
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="absolute left-0 top-full z-10 mt-1 min-w-40 rounded border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-900"
           >
             {DROPDOWN_ITEMS.map((item) => (
@@ -68,7 +72,7 @@ export function NavMenu() {
                 </Link>
               </li>
             ))}
-          </ul>
+          </motion.ul>
         )}
       </div>
       <Link href="/blog" className="rounded px-3 py-2 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">

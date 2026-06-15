@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./locale-switcher";
 import { NavMenu } from "./nav-menu";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Topbar() {
   const t = useTranslations("Nav");
@@ -13,7 +14,10 @@ export function Topbar() {
           {t("brand")}
         </Link>
         <div className="flex flex-col items-start gap-1 sm:items-end">
-          <LocaleSwitcher />
+          <div className="flex items-center gap-2">
+            <LocaleSwitcher />
+            <ThemeToggle />
+          </div>
           <a href={`mailto:${t("email")}`} className="text-sm text-zinc-500 dark:text-zinc-400">
             {t("email")}
           </a>

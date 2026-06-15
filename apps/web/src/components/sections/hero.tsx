@@ -16,7 +16,11 @@ export function Hero({ profile }: HeroProps) {
       <p className="text-lg text-zinc-600 dark:text-zinc-400">
         {profile?.tagline ?? t("fallbackTagline")}
       </p>
-      <a href="#about" aria-label={t("scrollLabel")} className="mt-4 animate-bounce text-3xl">
+      <a
+        href="#about"
+        aria-label={t("scrollLabel")}
+        className="mt-4 animate-bounce text-3xl motion-reduce:animate-none"
+      >
         ↓
       </a>
     </section>

@@ -1,6 +1,9 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import type { Project } from "@portfolio/shared-types/site";
 import { Link } from "@/i18n/navigation";
+import { RevealSection } from "@/components/motion/reveal-section";
 
 type FeaturedProjectsProps = {
   projects: Project[];
@@ -10,7 +13,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   const t = useTranslations("Home.projects");
 
   return (
-    <section className="flex flex-1 flex-col gap-4 px-6 py-16">
+    <RevealSection className="flex flex-1 flex-col gap-4 px-6 py-16">
       <h2 className="text-2xl font-semibold tracking-tight">{t("title")}</h2>
       {projects.length === 0 ? (
         <p className="text-zinc-600 dark:text-zinc-400">{t("empty")}</p>
@@ -27,6 +30,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
       <Link href="/projects" className="text-sm font-medium underline">
         {t("seeAll")}
       </Link>
-    </section>
+    </RevealSection>
   );
 }
