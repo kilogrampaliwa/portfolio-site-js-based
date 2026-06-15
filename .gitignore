@@ -8,6 +8,10 @@ build/
 .next/
 out/
 
+# CDK
+cdk.out/
+cdk.context.json
+
 # Env files
 .env
 .env.*

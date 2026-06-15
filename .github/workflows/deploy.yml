@@ -1,0 +1,64 @@
+name: Deploy
+
+# Runs only after CI succeeds on master — `workflow_run` means the deploy
+# job is gated on the CI workflow's conclusion, so a failing test/lint/synth
+# job blocks deployment.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [master]
+
+permissions:
+  id-token: write # required for GitHub OIDC -> AWS IAM role
+  contents: read
+
+env:
+  PNPM_VERSION: "11.6.0"
+  NODE_VERSION: "20"
+
+jobs:
+  deploy-apis:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: cdk deploy
+        working-directory: infra
+        run: pnpm exec cdk deploy --all --require-approval never
+        env:
+          DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+          HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
+          PROFILE_API_SUBDOMAIN: ${{ vars.PROFILE_API_SUBDOMAIN }}
+          SITE_API_SUBDOMAIN: ${{ vars.SITE_API_SUBDOMAIN }}
+          PROFILE_SUPABASE_SECRET_ARN: ${{ vars.PROFILE_SUPABASE_SECRET_ARN }}
+          SITE_SUPABASE_SECRET_ARN: ${{ vars.SITE_SUPABASE_SECRET_ARN }}
+          PROFILE_ALLOWED_ORIGINS: ${{ vars.PROFILE_ALLOWED_ORIGINS }}
+          SITE_ALLOWED_ORIGINS: ${{ vars.SITE_ALLOWED_ORIGINS }}
+          CDK_DEFAULT_ACCOUNT: ${{ vars.AWS_ACCOUNT_ID }}
+          CDK_DEFAULT_REGION: ${{ vars.AWS_REGION }}
+
+      - name: Post-deploy smoke test
+        run: bash infra/scripts/smoke-test.sh
+        env:
+          WEB_URL: ${{ vars.WEB_URL }}
+          PROFILE_API_URL: https://${{ vars.PROFILE_API_SUBDOMAIN || 'api' }}.${{ vars.DOMAIN_NAME }}
+          SITE_API_URL: https://${{ vars.SITE_API_SUBDOMAIN || 'site-api' }}.${{ vars.DOMAIN_NAME }}
+          PROFILE_API_KEY: ${{ secrets.SMOKE_TEST_PROFILE_API_KEY }}
