@@ -1,6 +1,36 @@
 {
-  "HomePage": {
-    "title": "Welcome",
-    "description": "Portfolio placeholder page — full content lands in later layers."
+  "Landing": {
+    "greeting": "Welcome here!",
+    "hint": "Scroll down for more",
+    "scrollLabel": "Scroll to main content"
+  },
+  "Nav": {
+    "brand": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "menuLabel": "Menu",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "certificates": "Certificates",
+    "blog": "Blog",
+    "languageLabel": "Language"
+  },
+  "Footer": {
+    "rights": "All rights reserved."
+  },
+  "ProjectsPage": {
+    "title": "Projects"
+  },
+  "BlogPage": {
+    "title": "Blog"
+  },
+  "ExperiencePage": {
+    "title": "Experience"
+  },
+  "EducationPage": {
+    "title": "Education"
+  },
+  "CertificatesPage": {
+    "title": "Certificates"
   }
 }
