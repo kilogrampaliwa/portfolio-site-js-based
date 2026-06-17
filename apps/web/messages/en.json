@@ -1,8 +1,8 @@
 {
   "Home": {
     "hero": {
-      "fallbackName": "Jane Doe",
-      "fallbackTagline": "Welcome to my portfolio",
+      "fallbackName": "Filip Ciąder",
+      "fallbackTagline": "Engineer & Python Developer",
       "scrollLabel": "Scroll to learn more"
     },
     "about": {
@@ -31,8 +31,8 @@
     }
   },
   "Nav": {
-    "brand": "Jane Doe",
-    "email": "jane.doe@example.com",
+    "brand": "Filip Ciąder",
+    "email": "filip.ciader@gmail.com",
     "menuLabel": "Menu",
     "projects": "Projects",
     "experience": "Experience",
