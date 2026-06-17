@@ -8,7 +8,7 @@ applications:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
             - cd ../.. && pnpm install --frozen-lockfile
-            - cd ../.. && npx -p typescript@5.9.3 tsc -p packages/shared-types/tsconfig.json
+            - npx -p typescript@5.9.3 tsc -p ../../packages/shared-types/tsconfig.json
         build:
           commands:
             - ./node_modules/.bin/next build
