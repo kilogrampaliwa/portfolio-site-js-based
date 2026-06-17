@@ -48,7 +48,7 @@ export class ApiLambdaApi extends Construct {
     this.handler = new lambdaNodejs.NodejsFunction(this, "Handler", {
       entry: props.entry,
       handler: "handler",
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       architecture: lambda.Architecture.ARM_64,
       memorySize: 256,
       timeout: Duration.seconds(10),
@@ -56,7 +56,7 @@ export class ApiLambdaApi extends Construct {
       depsLockFilePath: path.resolve(import.meta.dirname, "../../pnpm-lock.yaml"),
       bundling: {
         format: lambdaNodejs.OutputFormat.ESM,
-        target: "node20",
+        target: "node22",
         mainFields: ["module", "main"],
         banner:
           "import { createRequire } from 'module'; const require = createRequire(import.meta.url);",
