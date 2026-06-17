@@ -21,7 +21,7 @@ grant select on
   public.v_projects,
   public.v_qualifications,
   public.v_skills
-to anon, authenticated;
+to anon, authenticated, service_role;
 
 -- anon/authenticated also need select on underlying tables for views to work
 grant select on
