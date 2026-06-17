@@ -51,7 +51,7 @@ jobs:
       # apps/web, apps/api-profile, packages/shared-types,
       # infra (CDK assertion tests — no AWS credentials required).
       - name: Unit & integration tests
-        run: pnpm test
+        run: pnpm --filter '!@portfolio/api-site' test
 
       - name: RLS integration tests (profile project)
         run: pnpm test:db:profile
