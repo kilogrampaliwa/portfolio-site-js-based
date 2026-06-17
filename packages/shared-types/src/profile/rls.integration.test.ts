@@ -64,6 +64,6 @@ describe("profile brain RLS", () => {
     const { data, error } = await serviceRole.from("api_keys").select("*");
     expect(error).toBeNull();
     expect(data?.length).toBeGreaterThan(0);
-    expect(data?.[0]?.client_name).toBe("web");
+    expect(data?.some((row) => row.client_name === "web")).toBe(true);
   });
 });
