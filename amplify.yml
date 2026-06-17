@@ -2,21 +2,22 @@ version: 1
 applications:
   - appRoot: apps/web
     frontend:
+      buildPath: /
       phases:
         preBuild:
           commands:
             - corepack enable
             - corepack prepare pnpm@10.11.0 --activate
-            - cd ../.. && pnpm install --frozen-lockfile
-            - cd ../.. && pnpm --filter @portfolio/shared-types build
+            - pnpm install --frozen-lockfile
+            - pnpm --filter @portfolio/shared-types build
         build:
           commands:
-            - cd ../.. && pnpm --filter @portfolio/web build
+            - pnpm --filter @portfolio/web build
       artifacts:
-        baseDirectory: .amplify-hosting
+        baseDirectory: apps/web/.next
         files:
           - "**/*"
       cache:
         paths:
-          - ../../node_modules/**/*
-          - .next/cache/**/*
+          - node_modules/**/*
+          - apps/web/.next/cache/**/*
