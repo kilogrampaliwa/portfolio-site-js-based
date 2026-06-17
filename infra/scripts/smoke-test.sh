@@ -12,7 +12,7 @@ check() {
   local description="$1" url="$2" expected="$3"
   shift 3
   local actual
-  actual=$(curl -s -o /dev/null -w "%{http_code}" "$@" "$url")
+  actual=$(curl -sL -o /dev/null -w "%{http_code}" "$@" "$url")
   if [[ "$actual" != "$expected" ]]; then
     echo "FAIL: $description -> $url returned $actual, expected $expected"
     exit 1
