@@ -7,6 +7,7 @@ applications:
           commands:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
+            - export TMPDIR=/tmp
             - export PNPM_HOME=/tmp/pnpm
             - export PNPM_STORE_DIR=/tmp/pnpm-store
             - cd ../.. && pnpm install --frozen-lockfile
