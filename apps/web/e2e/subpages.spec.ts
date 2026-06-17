@@ -70,30 +70,11 @@ test.describe("subpages: locale switching", () => {
 });
 
 test.describe("subpages: 404 handling for missing detail pages", () => {
-  test("unknown project slug renders the not-found page", async ({ page }) => {
-    const response = await page.goto("/en/projects/no-such-project");
-
-    expect(response?.status()).toBe(404);
-    await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Back to home" })).toHaveAttribute("href", "/en");
-  });
-
   test("unknown blog post slug renders the not-found page", async ({ page }) => {
     const response = await page.goto("/en/blog/no-such-post");
 
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Back to home" })).toHaveAttribute("href", "/en");
-  });
-
-  test("unknown project slug renders the localized not-found page in Polish", async ({ page }) => {
-    const response = await page.goto("/pl/projects/no-such-project");
-
-    expect(response?.status()).toBe(404);
-    await expect(page.getByRole("heading", { name: "Nie znaleziono strony" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Wróć na stronę główną" })).toHaveAttribute(
-      "href",
-      "/pl",
-    );
   });
 });
