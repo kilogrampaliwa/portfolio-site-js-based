@@ -8,10 +8,10 @@ applications:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
             - cd ../.. && pnpm install --frozen-lockfile
-            - cd ../.. && pnpm exec tsc -p packages/shared-types/tsconfig.json
+            - cd ../.. && node -e "require('child_process').execFileSync(process.execPath,[require.resolve('typescript/bin/tsc'),'-p','packages/shared-types/tsconfig.json'],{stdio:'inherit'})"
         build:
           commands:
-            - pnpm build
+            - ./node_modules/.bin/next build
       artifacts:
         baseDirectory: .next
         files:
