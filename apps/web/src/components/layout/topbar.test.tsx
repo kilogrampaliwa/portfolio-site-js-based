@@ -43,11 +43,15 @@ vi.mock("@/i18n/routing", () => ({
   routing: { locales: ["en", "pl"], defaultLocale: "en" },
 }));
 
+vi.mock("@/components/motion/rotating-brand", () => ({
+  RotatingBrand: () => <span>Filip Ciąder</span>,
+}));
+
 describe("Topbar", () => {
   it("renders the brand link and the dropdown nav items plus blog link", () => {
     render(<Topbar />);
 
-    expect(screen.getByRole("link", { name: "Jane Doe" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Filip Ciąder" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Blog" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Menu" }));

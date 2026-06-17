@@ -12,6 +12,10 @@ vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => messages[key] ?? key,
 }));
 
+vi.mock("@/components/motion/rotating-brand", () => ({
+  RotatingBrand: () => <span>Filip Ciąder</span>,
+}));
+
 const aboutFixture = {
   bioShort: "Short bio.",
   bioLong: "Long bio.",
@@ -23,14 +27,14 @@ describe("Hero", () => {
   it("renders the fallback name (from translations) and first target role as tagline", () => {
     render(<Hero about={aboutFixture} />);
 
-    expect(screen.getByRole("heading", { name: "Jane Doe" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Filip Ciąder" })).toBeInTheDocument();
     expect(screen.getByText("Backend Development")).toBeInTheDocument();
   });
 
   it("falls back to placeholder copy when the about is unavailable", () => {
     render(<Hero about={null} />);
 
-    expect(screen.getByRole("heading", { name: "Jane Doe" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Filip Ciąder" })).toBeInTheDocument();
     expect(screen.getByText("Welcome to my portfolio")).toBeInTheDocument();
   });
 
