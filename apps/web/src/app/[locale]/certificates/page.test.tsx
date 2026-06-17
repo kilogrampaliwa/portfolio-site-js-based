@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import type { Certificate } from "@portfolio/shared-types/profile";
+import type { Qualification } from "@portfolio/shared-types/profile";
 import CertificatesPage from "./page";
 
 const messages: Record<string, Record<string, string>> = {
@@ -17,20 +17,23 @@ vi.mock("next-intl/server", () => ({
   getTranslations: async (namespace: string) => (key: string) => messages[namespace]?.[key] ?? key,
 }));
 
-const certificatesFixture: Certificate[] = vi.hoisted(() => [
+const certificatesFixture: Qualification[] = vi.hoisted(() => [
   {
     id: "1",
-    name: "Certified Example",
-    issuer: "Example Org",
-    issueDate: "2022-01-01",
-    expiryDate: "2025-01-01",
+    title: "AI for Developers",
+    issuer: "AI-for-devs",
+    type: "certification",
+    description: null,
+    credentialId: "abc-123",
     credentialUrl: "https://example.com/credential",
-    orderIndex: 0,
+    issueDate: "2025-01-01",
+    expiryDate: null,
+    displayOrder: 0,
   },
 ]);
 
 vi.mock("@/lib/apiProfile", () => ({
-  getCertificates: vi.fn().mockResolvedValue(certificatesFixture),
+  getQualifications: vi.fn().mockResolvedValue(certificatesFixture),
 }));
 
 describe("CertificatesPage", () => {
@@ -38,8 +41,8 @@ describe("CertificatesPage", () => {
     render(await CertificatesPage());
 
     expect(screen.getByRole("heading", { name: "Certificates" })).toBeInTheDocument();
-    expect(screen.getByText("Certified Example — Example Org")).toBeInTheDocument();
-    expect(screen.getByText("2022-01-01 · Expires 2025-01-01")).toBeInTheDocument();
+    expect(screen.getByText("AI for Developers — AI-for-devs")).toBeInTheDocument();
+    expect(screen.getByText("2025-01-01")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View credential" })).toHaveAttribute(
       "href",
       "https://example.com/credential",

@@ -1,12 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { Project } from "@portfolio/shared-types/site";
+import type { ResumeProject } from "@portfolio/shared-types/profile";
 import { Link } from "@/i18n/navigation";
 import { RevealSection } from "@/components/motion/reveal-section";
 
 type FeaturedProjectsProps = {
-  projects: Project[];
+  projects: ResumeProject[];
 };
 
 export function FeaturedProjects({ projects }: FeaturedProjectsProps) {

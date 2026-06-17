@@ -48,20 +48,13 @@ jobs:
         working-directory: supabase/profile
         run: supabase start
 
-      - name: Start local Supabase (site project)
-        working-directory: supabase/site
-        run: supabase start
-
-      # apps/web, apps/api-profile, apps/api-site, packages/shared-types,
+      # apps/web, apps/api-profile, packages/shared-types,
       # infra (CDK assertion tests — no AWS credentials required).
       - name: Unit & integration tests
         run: pnpm test
 
       - name: RLS integration tests (profile project)
         run: pnpm test:db:profile
-
-      - name: RLS integration tests (site project)
-        run: pnpm test:db:site
 
       - name: Install Playwright browsers
         run: pnpm --filter @portfolio/web exec playwright install --with-deps chromium
@@ -73,7 +66,6 @@ jobs:
         if: always()
         run: |
           (cd supabase/profile && supabase stop) || true
-          (cd supabase/site && supabase stop) || true
 
   cdk-synth:
     runs-on: ubuntu-latest
@@ -90,9 +82,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
-      # Validates the CDK app's syntax/wiring on every PR. Uses placeholder
-      # config — no AWS credentials needed (stacks synth environment-agnostic
-      # when CDK_DEFAULT_ACCOUNT/REGION are unset).
       - name: cdk synth
         working-directory: infra
         run: pnpm exec cdk synth --quiet
@@ -100,6 +89,4 @@ jobs:
           DOMAIN_NAME: example.com
           HOSTED_ZONE_ID: Z00000000000000EXAMPLE
           PROFILE_SUPABASE_SECRET_ARN: "arn:aws:secretsmanager:eu-central-1:000000000000:secret:portfolio/profile/supabase-placeholder"
-          SITE_SUPABASE_SECRET_ARN: "arn:aws:secretsmanager:eu-central-1:000000000000:secret:portfolio/site/supabase-placeholder"
           PROFILE_ALLOWED_ORIGINS: "https://example.com"
-          SITE_ALLOWED_ORIGINS: "https://example.com"

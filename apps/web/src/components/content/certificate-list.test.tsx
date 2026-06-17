@@ -1,26 +1,32 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import type { Certificate } from "@portfolio/shared-types/profile";
+import type { Qualification } from "@portfolio/shared-types/profile";
 import { CertificateList } from "./certificate-list";
 
-const items: Certificate[] = [
+const items: Qualification[] = [
   {
     id: "1",
-    name: "Certified Example",
+    title: "Certified Example",
     issuer: "Example Org",
+    type: "certification",
+    description: null,
+    credentialId: null,
+    credentialUrl: "https://example.com/credential",
     issueDate: "2022-01-01",
     expiryDate: "2025-01-01",
-    credentialUrl: "https://example.com/credential",
-    orderIndex: 0,
+    displayOrder: 0,
   },
   {
     id: "2",
-    name: "Other Certificate",
+    title: "Other Certificate",
     issuer: "Other Org",
+    type: "course",
+    description: null,
+    credentialId: null,
+    credentialUrl: null,
     issueDate: "2021-01-01",
     expiryDate: null,
-    credentialUrl: null,
-    orderIndex: 1,
+    displayOrder: 1,
   },
 ];
 

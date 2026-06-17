@@ -1,8 +1,8 @@
-import type { Certificate } from "@portfolio/shared-types/profile";
+import type { Qualification } from "@portfolio/shared-types/profile";
 import { ExternalLink } from "./external-link";
 
 type CertificateListProps = {
-  items: Certificate[];
+  items: Qualification[];
   emptyLabel: string;
   expiresLabel: string;
   credentialLabel: string;
@@ -18,7 +18,7 @@ export function CertificateList({ items, emptyLabel, expiresLabel, credentialLab
       {items.map((item) => (
         <li key={item.id} className="border-l-2 border-zinc-200 pl-4 dark:border-zinc-700">
           <p className="font-medium">
-            {item.name} — {item.issuer}
+            {item.title} — {item.issuer}
           </p>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             {item.issueDate}

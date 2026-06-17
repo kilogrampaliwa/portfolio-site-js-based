@@ -48,23 +48,20 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 
-const profileFixture = vi.hoisted(() => ({
-  fullName: "Ada Lovelace",
-  tagline: "Software pioneer",
-  bio: "I build things.",
-  email: "ada@example.com",
-  socialLinks: { GitHub: "https://github.com/ada" },
-  avatarUrl: null,
+const aboutFixture = vi.hoisted(() => ({
+  bioShort: "Short bio.",
+  bioLong: "I build things.",
+  targetRoles: ["Backend Development"],
   updatedAt: "2024-01-01T00:00:00.000Z",
 }));
 
 vi.mock("@/lib/apiProfile", () => ({
-  getProfile: vi.fn().mockResolvedValue(profileFixture),
+  getAbout: vi.fn().mockResolvedValue(aboutFixture),
   getExperience: vi.fn().mockResolvedValue([]),
+  getResumeProjects: vi.fn().mockResolvedValue([]),
 }));
 
 vi.mock("@/lib/apiSite", () => ({
-  getFeaturedProjects: vi.fn().mockResolvedValue([]),
   getLatestPosts: vi.fn().mockResolvedValue([]),
 }));
 
@@ -72,17 +69,14 @@ describe("HomePage", () => {
   it("renders all six homepage sections with fetched data", async () => {
     render(await HomePage());
 
-    expect(screen.getByRole("heading", { name: "Ada Lovelace" })).toBeInTheDocument();
-    expect(screen.getByText("Software pioneer")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Jane Doe" })).toBeInTheDocument();
+    expect(screen.getByText("Backend Development")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
     expect(screen.getByText("I build things.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Featured Projects" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Latest Posts" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "ada@example.com" })).toHaveAttribute(
-      "href",
-      "mailto:ada@example.com",
-    );
+    expect(screen.getByText("Contact details coming soon.")).toBeInTheDocument();
   });
 });

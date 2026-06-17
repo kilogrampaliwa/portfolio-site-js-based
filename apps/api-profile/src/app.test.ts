@@ -4,12 +4,10 @@ import { buildApp } from "./app";
 
 /**
  * Integration tests against a local Supabase instance for the profile/CV
- * brain (`supabase/profile`). Run `supabase start --workdir supabase/profile`
- * first (see `supabase/profile/README.md`), then `pnpm --filter
- * @portfolio/api-profile test` (or root `pnpm test`).
+ * brain (reasume_api schema). Run `supabase start --workdir supabase/profile`
+ * first, then `pnpm --filter @portfolio/api-profile test`.
  *
- * The keys below are from `supabase/profile/supabase/seed.sql` — local-dev
- * fixtures only, not secrets.
+ * The keys below are from the local-dev seed — not production secrets.
  */
 const VALID_API_KEY =
   process.env.PROFILE_API_KEY ?? "a456fb3913986e5dd8970c52013d2602bd222a2fbf23c05a27891d11def215db";
@@ -39,7 +37,7 @@ describe("GET /health", () => {
 
 describe("API key authentication", () => {
   it("rejects a request with no X-API-Key header", async () => {
-    const response = await app.inject({ method: "GET", url: "/profile" });
+    const response = await app.inject({ method: "GET", url: "/about" });
 
     expect(response.statusCode).toBe(401);
     expect(response.json().error.code).toBe("unauthorized");
@@ -48,7 +46,7 @@ describe("API key authentication", () => {
   it("rejects a request with a garbage X-API-Key header", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/profile",
+      url: "/about",
       headers: { "x-api-key": "not-a-real-key" },
     });
 
@@ -59,7 +57,7 @@ describe("API key authentication", () => {
   it("rejects a request with a revoked API key", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/profile",
+      url: "/about",
       headers: { "x-api-key": REVOKED_API_KEY },
     });
 
@@ -68,46 +66,23 @@ describe("API key authentication", () => {
   });
 });
 
-describe("GET /profile", () => {
-  it("returns the profile in English by default", async () => {
+describe("GET /about", () => {
+  it("returns the about singleton", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/profile",
+      url: "/about",
       headers: { "x-api-key": VALID_API_KEY },
     });
 
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body.fullName).toBe("Jane Doe");
-    expect(body.tagline).toBe("Full-Stack Software Engineer");
-    expect(body.email).toBe("jane.doe@example.com");
-  });
-
-  it("resolves ?locale=pl", async () => {
-    const response = await app.inject({
-      method: "GET",
-      url: "/profile?locale=pl",
-      headers: { "x-api-key": VALID_API_KEY },
-    });
-
-    expect(response.statusCode).toBe(200);
-    expect(response.json().tagline).toBe("Inżynier Full-Stack");
-  });
-
-  it("rejects an invalid ?locale=", async () => {
-    const response = await app.inject({
-      method: "GET",
-      url: "/profile?locale=fr",
-      headers: { "x-api-key": VALID_API_KEY },
-    });
-
-    expect(response.statusCode).toBe(400);
-    expect(response.json().error.code).toBe("bad_request");
+    expect(typeof body.bioShort).toBe("string");
+    expect(Array.isArray(body.targetRoles)).toBe(true);
   });
 });
 
 describe("GET /experience", () => {
-  it("returns experience ordered by order_index", async () => {
+  it("returns experience ordered by display_order", async () => {
     const response = await app.inject({
       method: "GET",
       url: "/experience",
@@ -118,55 +93,55 @@ describe("GET /experience", () => {
     const body = response.json();
     expect(Array.isArray(body)).toBe(true);
     expect(body.length).toBeGreaterThan(0);
-    expect(body[0].company).toBe("Acme Corp");
-    expect(body[0].orderIndex).toBe(0);
-  });
-
-  it("resolves ?locale=pl", async () => {
-    const response = await app.inject({
-      method: "GET",
-      url: "/experience?locale=pl",
-      headers: { "x-api-key": VALID_API_KEY },
-    });
-
-    expect(response.statusCode).toBe(200);
-    expect(response.json()[0].description).toContain("Prowadzenie rozwoju portalu");
+    expect(typeof body[0].title).toBe("string");
+    expect(typeof body[0].company).toBe("string");
+    expect(typeof body[0].displayOrder).toBe("number");
   });
 });
 
-describe("GET /education", () => {
-  it("returns education ordered by order_index", async () => {
+describe("GET /qualifications", () => {
+  it("returns all qualifications by default", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/education",
+      url: "/qualifications",
       headers: { "x-api-key": VALID_API_KEY },
     });
 
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(body.length).toBeGreaterThan(0);
-    expect(body[0].institution).toBe("University of Technology");
-    expect(body[0].degree).toBe("MSc");
+    expect(typeof body[0].title).toBe("string");
+    expect(typeof body[0].issuer).toBe("string");
+    expect(["degree", "certification", "course"]).toContain(body[0].type);
   });
-});
 
-describe("GET /certificates", () => {
-  it("returns certificates ordered by order_index", async () => {
+  it("filters by ?type=degree", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/certificates",
+      url: "/qualifications?type=degree",
       headers: { "x-api-key": VALID_API_KEY },
     });
 
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body.length).toBeGreaterThan(0);
-    expect(body[0].issuer).toBe("Amazon Web Services");
+    expect(body.every((q: { type: string }) => q.type === "degree")).toBe(true);
+  });
+
+  it("filters by ?type=certification,course", async () => {
+    const response = await app.inject({
+      method: "GET",
+      url: "/qualifications?type=certification,course",
+      headers: { "x-api-key": VALID_API_KEY },
+    });
+
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.every((q: { type: string }) => ["certification", "course"].includes(q.type))).toBe(true);
   });
 });
 
 describe("GET /skills", () => {
-  it("returns skills ordered by order_index", async () => {
+  it("returns all skills ordered by display_order", async () => {
     const response = await app.inject({
       method: "GET",
       url: "/skills",
@@ -176,29 +151,42 @@ describe("GET /skills", () => {
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(body.length).toBeGreaterThan(0);
-    expect(body[0].name).toBe("TypeScript");
-    expect(body[0].keywords).toContain("typescript");
+    expect(typeof body[0].name).toBe("string");
+    expect(typeof body[0].category).toBe("string");
   });
-});
 
-describe("GET /languages", () => {
-  it("returns languages ordered by order_index, resolving locale", async () => {
+  it("filters by ?category=languages", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/languages",
+      url: "/skills?category=languages",
       headers: { "x-api-key": VALID_API_KEY },
     });
 
     expect(response.statusCode).toBe(200);
     const body = response.json();
+    expect(body.every((s: { category: string }) => s.category === "languages")).toBe(true);
+  });
+});
+
+describe("GET /projects", () => {
+  it("returns projects ordered by display_order", async () => {
+    const response = await app.inject({
+      method: "GET",
+      url: "/projects",
+      headers: { "x-api-key": VALID_API_KEY },
+    });
+
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(Array.isArray(body)).toBe(true);
     expect(body.length).toBeGreaterThan(0);
-    expect(body[0].name).toBe("English");
-    expect(body[0].fluency).toBe("Fluent (C1)");
+    expect(typeof body[0].title).toBe("string");
+    expect(Array.isArray(body[0].highlights)).toBe(true);
   });
 });
 
 describe("GET /resume", () => {
-  it("returns the combined aggregate of every other endpoint", async () => {
+  it("returns the full CV aggregate", async () => {
     const response = await app.inject({
       method: "GET",
       url: "/resume",
@@ -207,12 +195,11 @@ describe("GET /resume", () => {
 
     expect(response.statusCode).toBe(200);
     const body = response.json();
-    expect(body.profile.fullName).toBe("Jane Doe");
+    expect(body.about).toBeDefined();
     expect(body.experience.length).toBeGreaterThan(0);
-    expect(body.education.length).toBeGreaterThan(0);
-    expect(body.certificates.length).toBeGreaterThan(0);
+    expect(body.qualifications.length).toBeGreaterThan(0);
     expect(body.skills.length).toBeGreaterThan(0);
-    expect(body.languages.length).toBeGreaterThan(0);
+    expect(body.projects.length).toBeGreaterThan(0);
   });
 });
 

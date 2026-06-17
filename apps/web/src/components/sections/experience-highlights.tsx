@@ -22,7 +22,7 @@ export function ExperienceHighlights({ items }: ExperienceHighlightsProps) {
           {items.map((item) => (
             <li key={item.id} className="border-l-2 border-zinc-200 pl-4 dark:border-zinc-700">
               <p className="font-medium">
-                {item.role} — {item.company}
+                {item.title} — {item.company}
               </p>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 {item.startDate} – {item.endDate ?? t("present")}

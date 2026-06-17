@@ -82,21 +82,3 @@ export function loadProfileApiConfig(): ApiStackConfig {
   };
 }
 
-/**
- * Reads the `apps/api-site` deployment config from the environment.
- * `apps/api-site` is the site-only projects/blog API — CORS-restricted to
- * the production `apps/web` origin, no API key.
- */
-export function loadSiteApiConfig(): ApiStackConfig {
-  const zoneName = requireEnv("DOMAIN_NAME");
-  return {
-    zoneName,
-    hostedZoneId: requireEnv("HOSTED_ZONE_ID"),
-    domainName: `${optionalEnv("SITE_API_SUBDOMAIN", "site-api")}.${zoneName}`,
-    supabaseSecretArn: requireEnv("SITE_SUPABASE_SECRET_ARN"),
-    allowedOrigins: requireEnv("SITE_ALLOWED_ORIGINS"),
-    throttling: throttling(),
-    logRetention: logRetention(),
-    env: cdkEnv(),
-  };
-}

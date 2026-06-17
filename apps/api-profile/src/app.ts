@@ -5,18 +5,16 @@ import rateLimit from "@fastify/rate-limit";
 import type { HealthStatus } from "@portfolio/shared-types";
 import { apiKeyAuth } from "./lib/auth";
 import { AppError, errorBody } from "./lib/errors";
-import { registerProfileRoute } from "./routes/profile";
+import { registerAboutRoute } from "./routes/about";
 import { registerExperienceRoute } from "./routes/experience";
-import { registerEducationRoute } from "./routes/education";
-import { registerCertificatesRoute } from "./routes/certificates";
+import { registerQualificationsRoute } from "./routes/qualifications";
 import { registerSkillsRoute } from "./routes/skills";
-import { registerLanguagesRoute } from "./routes/languages";
+import { registerProjectsRoute } from "./routes/projects";
 import { registerResumeRoute } from "./routes/resume";
 
 /**
  * Builds the Fastify instance without starting it listening.
- * Used by `src/server.ts` for local dev and by `src/lambda.ts`, so both
- * share the same app definition.
+ * Used by `src/server.ts` for local dev and by `src/lambda.ts`.
  */
 export async function buildApp(): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
@@ -37,8 +35,6 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
   });
 
-  // Registered before rate-limit so `request.apiClientName` is set by the
-  // time the rate-limit plugin's `onRequest` hook (registered below) runs.
   app.addHook("onRequest", apiKeyAuth);
 
   await app.register(rateLimit, {
@@ -51,12 +47,11 @@ export async function buildApp(): Promise<FastifyInstance> {
     return { status: "ok" };
   });
 
-  registerProfileRoute(app);
+  registerAboutRoute(app);
   registerExperienceRoute(app);
-  registerEducationRoute(app);
-  registerCertificatesRoute(app);
+  registerQualificationsRoute(app);
   registerSkillsRoute(app);
-  registerLanguagesRoute(app);
+  registerProjectsRoute(app);
   registerResumeRoute(app);
 
   app.setErrorHandler<FastifyError | AppError>((error, request, reply) => {

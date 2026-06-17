@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import type { Education } from "@portfolio/shared-types/profile";
+import type { Qualification } from "@portfolio/shared-types/profile";
 import EducationPage from "./page";
 
 const messages: Record<string, Record<string, string>> = {
@@ -16,21 +16,23 @@ vi.mock("next-intl/server", () => ({
   getTranslations: async (namespace: string) => (key: string) => messages[namespace]?.[key] ?? key,
 }));
 
-const educationFixture: Education[] = vi.hoisted(() => [
+const educationFixture: Qualification[] = vi.hoisted(() => [
   {
     id: "1",
-    institution: "State University",
-    degree: "B.Sc. Computer Science",
-    field: "Computer Science",
-    startDate: "2014-09-01",
-    endDate: "2018-06-01",
+    title: "BSc — Computer Science",
+    issuer: "State University",
+    type: "degree",
     description: "Studied computer science.",
-    orderIndex: 0,
+    credentialId: null,
+    credentialUrl: null,
+    issueDate: "2018-06-01",
+    expiryDate: null,
+    displayOrder: 0,
   },
 ]);
 
 vi.mock("@/lib/apiProfile", () => ({
-  getEducation: vi.fn().mockResolvedValue(educationFixture),
+  getQualifications: vi.fn().mockResolvedValue(educationFixture),
 }));
 
 describe("EducationPage", () => {
@@ -38,8 +40,7 @@ describe("EducationPage", () => {
     render(await EducationPage());
 
     expect(screen.getByRole("heading", { name: "Education" })).toBeInTheDocument();
-    expect(screen.getByText("B.Sc. Computer Science — State University")).toBeInTheDocument();
-    expect(screen.getByText("Computer Science")).toBeInTheDocument();
-    expect(screen.getByText("2014-09-01 – 2018-06-01")).toBeInTheDocument();
+    expect(screen.getByText("BSc — Computer Science — State University")).toBeInTheDocument();
+    expect(screen.getByText("2018-06-01 – Present")).toBeInTheDocument();
   });
 });

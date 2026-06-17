@@ -1,8 +1,8 @@
 import { App } from "aws-cdk-lib";
 import { Match, Template } from "aws-cdk-lib/assertions";
-import { describe, expect, it } from "vitest";
+import { describe, it } from "vitest";
 import { ApiProfileStack } from "../lib/api-profile-stack";
-import { fixtureProfileConfig, fixtureSiteConfig } from "./fixtures";
+import { fixtureProfileConfig } from "./fixtures";
 
 function synth() {
   const app = new App();
@@ -40,10 +40,9 @@ describe("ApiProfileStack", () => {
     });
   });
 
-  it("grants the Lambda read access to only its own Supabase secret", () => {
+  it("grants the Lambda read access to its Supabase secret", () => {
     const template = synth();
     const config = fixtureProfileConfig();
-    const otherSecretArn = fixtureSiteConfig().supabaseSecretArn;
 
     template.hasResourceProperties(
       "AWS::IAM::Policy",
@@ -58,9 +57,6 @@ describe("ApiProfileStack", () => {
         }),
       }),
     );
-
-    const json = JSON.stringify(template.toJSON());
-    expect(json).not.toContain(otherSecretArn);
   });
 
   it("creates an HTTP API with a throttled $default stage and custom domain", () => {

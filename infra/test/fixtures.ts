@@ -13,16 +13,3 @@ export function fixtureProfileConfig(): ApiStackConfig {
     logRetention: logs.RetentionDays.ONE_MONTH,
   };
 }
-
-export function fixtureSiteConfig(): ApiStackConfig {
-  return {
-    zoneName: "example.com",
-    hostedZoneId: "Z1234567890ABC",
-    domainName: "site-api.example.com",
-    supabaseSecretArn:
-      "arn:aws:secretsmanager:eu-central-1:222222222222:secret:portfolio/site/supabase-GhIjKl",
-    allowedOrigins: "https://example.com",
-    throttling: { rateLimit: 100, burstLimit: 50 },
-    logRetention: logs.RetentionDays.ONE_MONTH,
-  };
-}

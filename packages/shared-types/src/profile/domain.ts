@@ -1,66 +1,64 @@
 /**
- * Hand-written "domain" types for the profile/CV brain.
+ * Domain types for the profile/CV brain (reasume_api schema).
  *
- * These represent the *resolved* (single-locale) shapes returned by the
- * universal API (apps/api-profile, layer 03) — jsonb `{ en, pl }` fields from
- * the raw DB rows (see ./database.ts) are resolved to a single string for the
- * requested locale, decoupling consumers from the raw DB shape.
+ * These represent the resolved shapes returned by apps/api-profile.
+ * The database has no i18n JSONB fields — all text is plain.
  */
 
-export type Profile = {
-  fullName: string;
-  tagline: string;
-  bio: string;
-  email: string;
-  socialLinks: Record<string, string>;
-  avatarUrl: string | null;
+export type About = {
+  bioShort: string | null;
+  bioLong: string | null;
+  targetRoles: string[];
   updatedAt: string;
 };
 
 export type Experience = {
   id: string;
+  title: string;
   company: string;
-  role: string;
+  employmentType: string | null;
   location: string | null;
+  locationType: string | null;
+  description: string | null;
+  achievements: string[];
   startDate: string;
   endDate: string | null;
-  description: string;
-  orderIndex: number;
+  displayOrder: number;
 };
 
-export type Education = {
+export type Qualification = {
   id: string;
-  institution: string;
-  degree: string;
-  field: string | null;
-  startDate: string;
-  endDate: string | null;
-  description: string;
-  orderIndex: number;
-};
-
-export type Certificate = {
-  id: string;
-  name: string;
+  title: string;
   issuer: string;
+  type: string;
+  description: string | null;
+  credentialId: string | null;
+  credentialUrl: string | null;
   issueDate: string;
   expiryDate: string | null;
-  credentialUrl: string | null;
-  orderIndex: number;
+  displayOrder: number;
 };
 
 export type Skill = {
   id: string;
   name: string;
   category: string;
-  level: string | null;
-  keywords: string[];
-  orderIndex: number;
+  competencyLevel: string | null;
+  yearsOfExperience: number | null;
+  description: string | null;
+  displayOrder: number;
 };
 
-export type Language = {
+export type ResumeProject = {
   id: string;
-  name: string;
-  fluency: string;
-  orderIndex: number;
+  title: string;
+  type: string | null;
+  status: string;
+  description: string | null;
+  highlights: string[];
+  repoUrl: string | null;
+  demoUrl: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  displayOrder: number;
 };

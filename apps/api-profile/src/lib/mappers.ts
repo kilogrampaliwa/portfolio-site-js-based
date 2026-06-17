@@ -1,82 +1,76 @@
-import { resolveLocalizedText, type Locale, type LocalizedText } from "@portfolio/shared-types/locale";
 import type {
-  Certificate,
-  Education,
+  About,
   Experience,
-  Language,
-  Profile,
+  Qualification,
+  ResumeProject,
   Skill,
   Tables,
 } from "@portfolio/shared-types/profile";
 
-/** Maps DB rows (raw `jsonb` i18n fields) to resolved, single-locale domain types. */
-
-export function toProfile(row: Tables<"profile">, locale: Locale): Profile {
+export function toAbout(row: Tables<"about">): About {
   return {
-    fullName: row.full_name,
-    tagline: resolveLocalizedText(row.tagline as LocalizedText, locale),
-    bio: resolveLocalizedText(row.bio as LocalizedText, locale),
-    email: row.email,
-    socialLinks: (row.social_links ?? {}) as Record<string, string>,
-    avatarUrl: row.avatar_url,
+    bioShort: row.bio_short,
+    bioLong: row.bio_long,
+    targetRoles: row.target_roles,
     updatedAt: row.updated_at,
   };
 }
 
-export function toExperience(row: Tables<"experience">, locale: Locale): Experience {
+export function toExperience(row: Tables<"v_experience">): Experience {
   return {
-    id: row.id,
+    id: String(row.id),
+    title: row.title,
     company: row.company,
-    role: row.role,
+    employmentType: row.employment_type,
     location: row.location,
+    locationType: row.location_type,
+    description: row.description,
+    achievements: row.achievements,
     startDate: row.start_date,
     endDate: row.end_date,
-    description: resolveLocalizedText(row.description as LocalizedText, locale),
-    orderIndex: row.order_index,
+    displayOrder: row.display_order,
   };
 }
 
-export function toEducation(row: Tables<"education">, locale: Locale): Education {
+export function toQualification(row: Tables<"v_qualifications">): Qualification {
   return {
-    id: row.id,
-    institution: row.institution,
-    degree: row.degree,
-    field: row.field,
-    startDate: row.start_date,
-    endDate: row.end_date,
-    description: resolveLocalizedText(row.description as LocalizedText, locale),
-    orderIndex: row.order_index,
-  };
-}
-
-export function toCertificate(row: Tables<"certificates">): Certificate {
-  return {
-    id: row.id,
-    name: row.name,
+    id: String(row.id),
+    title: row.title,
     issuer: row.issuer,
+    type: row.type,
+    description: row.description,
+    credentialId: row.credential_id,
+    credentialUrl: row.credential_url,
     issueDate: row.issue_date,
     expiryDate: row.expiry_date,
-    credentialUrl: row.credential_url,
-    orderIndex: row.order_index,
+    displayOrder: row.display_order,
   };
 }
 
-export function toSkill(row: Tables<"skills">): Skill {
+export function toSkill(row: Tables<"v_skills">): Skill {
   return {
-    id: row.id,
+    id: String(row.id),
     name: row.name,
     category: row.category,
-    level: row.level,
-    keywords: row.keywords,
-    orderIndex: row.order_index,
+    competencyLevel: row.competency_level,
+    yearsOfExperience: row.years_of_experience,
+    description: row.description,
+    displayOrder: row.display_order,
   };
 }
 
-export function toLanguage(row: Tables<"languages">, locale: Locale): Language {
+export function toResumeProject(row: Tables<"v_projects">): ResumeProject {
   return {
-    id: row.id,
-    name: row.name,
-    fluency: resolveLocalizedText(row.fluency as LocalizedText, locale),
-    orderIndex: row.order_index,
+    id: String(row.id),
+    title: row.title,
+    type: row.type,
+    status: row.status,
+    description: row.description,
+    highlights: row.highlights,
+    repoUrl: row.repo_url,
+    demoUrl: row.demo_url,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    displayOrder: row.display_order,
   };
 }

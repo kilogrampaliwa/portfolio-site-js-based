@@ -9,243 +9,367 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      api_keys: {
+      about: {
         Row: {
-          client_name: string
-          created_at: string
-          id: string
-          key_hash: string
-          last_used_at: string | null
-          revoked_at: string | null
-        }
-        Insert: {
-          client_name: string
-          created_at?: string
-          id?: string
-          key_hash: string
-          last_used_at?: string | null
-          revoked_at?: string | null
-        }
-        Update: {
-          client_name?: string
-          created_at?: string
-          id?: string
-          key_hash?: string
-          last_used_at?: string | null
-          revoked_at?: string | null
-        }
-        Relationships: []
-      }
-      certificates: {
-        Row: {
-          created_at: string
-          credential_url: string | null
-          expiry_date: string | null
-          id: string
-          issue_date: string
-          issuer: string
-          name: string
-          order_index: number
+          id: number
+          bio_short: string | null
+          bio_long: string | null
+          target_roles: string[]
+          is_generated: boolean
           updated_at: string
         }
         Insert: {
-          created_at?: string
-          credential_url?: string | null
-          expiry_date?: string | null
-          id?: string
-          issue_date: string
-          issuer: string
-          name: string
-          order_index?: number
+          id?: never
+          bio_short?: string | null
+          bio_long?: string | null
+          target_roles?: string[]
+          is_generated?: boolean
           updated_at?: string
         }
         Update: {
-          created_at?: string
-          credential_url?: string | null
-          expiry_date?: string | null
-          id?: string
-          issue_date?: string
-          issuer?: string
-          name?: string
-          order_index?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      education: {
-        Row: {
-          created_at: string
-          degree: string
-          description: Json
-          end_date: string | null
-          field: string | null
-          id: string
-          institution: string
-          order_index: number
-          start_date: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          degree: string
-          description?: Json
-          end_date?: string | null
-          field?: string | null
-          id?: string
-          institution: string
-          order_index?: number
-          start_date: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          degree?: string
-          description?: Json
-          end_date?: string | null
-          field?: string | null
-          id?: string
-          institution?: string
-          order_index?: number
-          start_date?: string
+          id?: never
+          bio_short?: string | null
+          bio_long?: string | null
+          target_roles?: string[]
+          is_generated?: boolean
           updated_at?: string
         }
         Relationships: []
       }
       experience: {
         Row: {
+          id: number
+          title: string
           company: string
-          created_at: string
-          description: Json
-          end_date: string | null
-          id: string
+          employment_type: string | null
           location: string | null
-          order_index: number
-          role: string
+          location_type: string | null
+          description: string | null
+          achievements: string[]
           start_date: string
-          updated_at: string
-        }
-        Insert: {
-          company: string
-          created_at?: string
-          description?: Json
-          end_date?: string | null
-          id?: string
-          location?: string | null
-          order_index?: number
-          role: string
-          start_date: string
-          updated_at?: string
-        }
-        Update: {
-          company?: string
-          created_at?: string
-          description?: Json
-          end_date?: string | null
-          id?: string
-          location?: string | null
-          order_index?: number
-          role?: string
-          start_date?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      languages: {
-        Row: {
+          end_date: string | null
+          display_order: number
+          is_public: boolean
+          notes: string | null
           created_at: string
-          fluency: Json
-          id: string
-          name: string
-          order_index: number
           updated_at: string
         }
         Insert: {
+          id?: never
+          title: string
+          company: string
+          employment_type?: string | null
+          location?: string | null
+          location_type?: string | null
+          description?: string | null
+          achievements?: string[]
+          start_date: string
+          end_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
           created_at?: string
-          fluency: Json
-          id?: string
-          name: string
-          order_index?: number
           updated_at?: string
         }
         Update: {
+          id?: never
+          title?: string
+          company?: string
+          employment_type?: string | null
+          location?: string | null
+          location_type?: string | null
+          description?: string | null
+          achievements?: string[]
+          start_date?: string
+          end_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
           created_at?: string
-          fluency?: Json
-          id?: string
-          name?: string
-          order_index?: number
           updated_at?: string
         }
         Relationships: []
       }
-      profile: {
+      projects: {
         Row: {
-          avatar_url: string | null
-          bio: Json
-          email: string
-          full_name: string
-          id: string
-          social_links: Json
-          tagline: Json
+          id: number
+          title: string
+          type: string | null
+          status: string
+          description: string | null
+          highlights: string[]
+          repo_url: string | null
+          demo_url: string | null
+          start_date: string | null
+          end_date: string | null
+          display_order: number
+          is_public: boolean
+          notes: string | null
+          created_at: string
           updated_at: string
         }
         Insert: {
-          avatar_url?: string | null
-          bio: Json
-          email: string
-          full_name: string
-          id?: string
-          social_links?: Json
-          tagline: Json
+          id?: never
+          title: string
+          type?: string | null
+          status?: string
+          description?: string | null
+          highlights?: string[]
+          repo_url?: string | null
+          demo_url?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
+          created_at?: string
           updated_at?: string
         }
         Update: {
-          avatar_url?: string | null
-          bio?: Json
-          email?: string
-          full_name?: string
-          id?: string
-          social_links?: Json
-          tagline?: Json
+          id?: never
+          title?: string
+          type?: string | null
+          status?: string
+          description?: string | null
+          highlights?: string[]
+          repo_url?: string | null
+          demo_url?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      qualifications: {
+        Row: {
+          id: number
+          title: string
+          issuer: string
+          type: string
+          description: string | null
+          credential_id: string | null
+          credential_url: string | null
+          issue_date: string
+          expiry_date: string | null
+          display_order: number
+          is_public: boolean
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: never
+          title: string
+          issuer: string
+          type: string
+          description?: string | null
+          credential_id?: string | null
+          credential_url?: string | null
+          issue_date: string
+          expiry_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: never
+          title?: string
+          issuer?: string
+          type?: string
+          description?: string | null
+          credential_id?: string | null
+          credential_url?: string | null
+          issue_date?: string
+          expiry_date?: string | null
+          display_order?: number
+          is_public?: boolean
+          notes?: string | null
+          created_at?: string
           updated_at?: string
         }
         Relationships: []
       }
       skills: {
         Row: {
-          category: string
-          created_at: string
-          id: string
-          keywords: string[]
-          level: string | null
+          id: number
           name: string
-          order_index: number
-          updated_at: string
+          category: string
+          competency_level: string | null
+          years_of_experience: number | null
+          description: string | null
+          display_order: number
+          is_public: boolean
         }
         Insert: {
-          category: string
-          created_at?: string
-          id?: string
-          keywords?: string[]
-          level?: string | null
+          id?: never
           name: string
-          order_index?: number
-          updated_at?: string
+          category: string
+          competency_level?: string | null
+          years_of_experience?: number | null
+          description?: string | null
+          display_order?: number
+          is_public?: boolean
         }
         Update: {
-          category?: string
-          created_at?: string
-          id?: string
-          keywords?: string[]
-          level?: string | null
+          id?: never
           name?: string
-          order_index?: number
-          updated_at?: string
+          category?: string
+          competency_level?: string | null
+          years_of_experience?: number | null
+          description?: string | null
+          display_order?: number
+          is_public?: boolean
+        }
+        Relationships: []
+      }
+      experience_skills: {
+        Row: {
+          experience_id: number
+          skill_id: number
+        }
+        Insert: {
+          experience_id: number
+          skill_id: number
+        }
+        Update: {
+          experience_id?: number
+          skill_id?: number
+        }
+        Relationships: []
+      }
+      project_skills: {
+        Row: {
+          project_id: number
+          skill_id: number
+        }
+        Insert: {
+          project_id: number
+          skill_id: number
+        }
+        Update: {
+          project_id?: number
+          skill_id?: number
+        }
+        Relationships: []
+      }
+      qualification_skills: {
+        Row: {
+          qualification_id: number
+          skill_id: number
+        }
+        Insert: {
+          qualification_id: number
+          skill_id: number
+        }
+        Update: {
+          qualification_id?: number
+          skill_id?: number
+        }
+        Relationships: []
+      }
+      api_keys: {
+        Row: {
+          id: string
+          key_hash: string
+          client_name: string
+          revoked_at: string | null
+          last_used_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          key_hash: string
+          client_name: string
+          revoked_at?: string | null
+          last_used_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          key_hash?: string
+          client_name?: string
+          revoked_at?: string | null
+          last_used_at?: string | null
+          created_at?: string
         }
         Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      v_experience: {
+        Row: {
+          id: number
+          title: string
+          company: string
+          employment_type: string | null
+          location: string | null
+          location_type: string | null
+          description: string | null
+          achievements: string[]
+          start_date: string
+          end_date: string | null
+          display_order: number
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Relationships: []
+      }
+      v_projects: {
+        Row: {
+          id: number
+          title: string
+          type: string | null
+          status: string
+          description: string | null
+          highlights: string[]
+          repo_url: string | null
+          demo_url: string | null
+          start_date: string | null
+          end_date: string | null
+          display_order: number
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Relationships: []
+      }
+      v_qualifications: {
+        Row: {
+          id: number
+          title: string
+          issuer: string
+          type: string
+          description: string | null
+          credential_id: string | null
+          credential_url: string | null
+          issue_date: string
+          expiry_date: string | null
+          display_order: number
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Relationships: []
+      }
+      v_skills: {
+        Row: {
+          id: number
+          name: string
+          category: string
+          competency_level: string | null
+          years_of_experience: number | null
+          description: string | null
+          display_order: number
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
@@ -381,4 +505,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-

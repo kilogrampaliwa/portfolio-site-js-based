@@ -12,23 +12,10 @@ vi.mock("next-intl", () => ({
 }));
 
 describe("Contact", () => {
-  it("renders a mailto link and social links with safe target/rel", () => {
-    render(<Contact email="ada@example.com" socialLinks={{ GitHub: "https://github.com/ada" }} />);
+  it("renders the contact section with placeholder text", () => {
+    render(<Contact />);
 
-    expect(screen.getByRole("link", { name: "ada@example.com" })).toHaveAttribute(
-      "href",
-      "mailto:ada@example.com",
-    );
-
-    const githubLink = screen.getByRole("link", { name: "GitHub" });
-    expect(githubLink).toHaveAttribute("href", "https://github.com/ada");
-    expect(githubLink).toHaveAttribute("target", "_blank");
-    expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
-  });
-
-  it("falls back to a placeholder when contact info is unavailable", () => {
-    render(<Contact email={null} socialLinks={{}} />);
-
+    expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
     expect(screen.getByText("Contact details coming soon.")).toBeInTheDocument();
   });
 });

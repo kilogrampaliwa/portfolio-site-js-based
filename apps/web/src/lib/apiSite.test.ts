@@ -1,19 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getFeaturedProjects, getLatestPosts, getPostBySlug, getPosts, getProjectBySlug, getProjects } from "./apiSite";
-
-const validProject = {
-  id: "1",
-  slug: "demo",
-  title: "Demo Project",
-  description: "A demo project.",
-  techStack: ["TypeScript"],
-  link: null,
-  repoUrl: null,
-  imageUrl: null,
-  featured: true,
-  orderIndex: 0,
-  publishedAt: "2024-01-01T00:00:00.000Z",
-};
+import { getLatestPosts, getPostBySlug, getPosts } from "./apiSite";
 
 const validPaginatedPosts = {
   items: [
@@ -45,31 +31,6 @@ describe("apiSite", () => {
     vi.restoreAllMocks();
   });
 
-  describe("getFeaturedProjects", () => {
-    it("returns the parsed project list, requesting featured=true and the locale", async () => {
-      const fetchMock = vi
-        .spyOn(global, "fetch")
-        .mockResolvedValue(new Response(JSON.stringify([validProject]), { status: 200 }));
-
-      expect(await getFeaturedProjects("pl")).toEqual([validProject]);
-
-      const [url] = fetchMock.mock.calls[0];
-      expect(String(url)).toBe("http://localhost:3002/projects?locale=pl&featured=true");
-    });
-
-    it("returns an empty array when the response doesn't match the schema", async () => {
-      vi.spyOn(global, "fetch").mockResolvedValue(new Response(JSON.stringify({}), { status: 200 }));
-
-      expect(await getFeaturedProjects("en")).toEqual([]);
-    });
-
-    it("returns an empty array on network error", async () => {
-      vi.spyOn(global, "fetch").mockRejectedValue(new Error("network error"));
-
-      expect(await getFeaturedProjects("en")).toEqual([]);
-    });
-  });
-
   describe("getLatestPosts", () => {
     it("returns the items from the paginated response", async () => {
       const fetchMock = vi
@@ -86,44 +47,6 @@ describe("apiSite", () => {
       vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
 
       expect(await getLatestPosts("en", 3)).toEqual([]);
-    });
-  });
-
-  describe("getProjects", () => {
-    it("returns the parsed project list, requesting the locale", async () => {
-      const fetchMock = vi
-        .spyOn(global, "fetch")
-        .mockResolvedValue(new Response(JSON.stringify([validProject]), { status: 200 }));
-
-      expect(await getProjects("pl")).toEqual([validProject]);
-
-      const [url] = fetchMock.mock.calls[0];
-      expect(String(url)).toBe("http://localhost:3002/projects?locale=pl");
-    });
-
-    it("returns an empty array on error", async () => {
-      vi.spyOn(global, "fetch").mockResolvedValue(new Response("oops", { status: 500 }));
-
-      expect(await getProjects("en")).toEqual([]);
-    });
-  });
-
-  describe("getProjectBySlug", () => {
-    it("returns the parsed project, requesting the slug and locale", async () => {
-      const fetchMock = vi
-        .spyOn(global, "fetch")
-        .mockResolvedValue(new Response(JSON.stringify(validProject), { status: 200 }));
-
-      expect(await getProjectBySlug("pl", "demo")).toEqual(validProject);
-
-      const [url] = fetchMock.mock.calls[0];
-      expect(String(url)).toBe("http://localhost:3002/projects/demo?locale=pl");
-    });
-
-    it("returns null on a 404", async () => {
-      vi.spyOn(global, "fetch").mockResolvedValue(new Response("not found", { status: 404 }));
-
-      expect(await getProjectBySlug("en", "missing")).toBeNull();
     });
   });
 

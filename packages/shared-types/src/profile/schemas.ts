@@ -1,59 +1,72 @@
 import { z } from "zod";
 
 /**
- * Zod schemas validating the *resolved* (single-locale) response shapes
- * returned by the universal profile API (apps/api-profile, layer 03). Used
- * by API consumers (e.g. apps/web, layer 07) to fail safely if a response
- * doesn't match the expected shape, rather than rendering raw unvalidated
- * data.
- *
- * Keep in sync with the hand-written types in ./domain.ts.
+ * Zod schemas validating the response shapes returned by apps/api-profile.
+ * Keep in sync with domain.ts.
  */
 
-export const profileSchema = z.object({
-  fullName: z.string(),
-  tagline: z.string(),
-  bio: z.string(),
-  email: z.string(),
-  socialLinks: z.record(z.string(), z.string()),
-  avatarUrl: z.string().nullable(),
+export const aboutSchema = z.object({
+  bioShort: z.string().nullable(),
+  bioLong: z.string().nullable(),
+  targetRoles: z.array(z.string()),
   updatedAt: z.string(),
 });
 
 export const experienceSchema = z.object({
   id: z.string(),
+  title: z.string(),
   company: z.string(),
-  role: z.string(),
+  employmentType: z.string().nullable(),
   location: z.string().nullable(),
+  locationType: z.string().nullable(),
+  description: z.string().nullable(),
+  achievements: z.array(z.string()),
   startDate: z.string(),
   endDate: z.string().nullable(),
-  description: z.string(),
-  orderIndex: z.number(),
+  displayOrder: z.number(),
 });
 
 export const experienceListSchema = z.array(experienceSchema);
 
-export const educationSchema = z.object({
+export const qualificationSchema = z.object({
   id: z.string(),
-  institution: z.string(),
-  degree: z.string(),
-  field: z.string().nullable(),
-  startDate: z.string(),
-  endDate: z.string().nullable(),
-  description: z.string(),
-  orderIndex: z.number(),
-});
-
-export const educationListSchema = z.array(educationSchema);
-
-export const certificateSchema = z.object({
-  id: z.string(),
-  name: z.string(),
+  title: z.string(),
   issuer: z.string(),
+  type: z.string(),
+  description: z.string().nullable(),
+  credentialId: z.string().nullable(),
+  credentialUrl: z.string().nullable(),
   issueDate: z.string(),
   expiryDate: z.string().nullable(),
-  credentialUrl: z.string().nullable(),
-  orderIndex: z.number(),
+  displayOrder: z.number(),
 });
 
-export const certificateListSchema = z.array(certificateSchema);
+export const qualificationListSchema = z.array(qualificationSchema);
+
+export const skillSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  category: z.string(),
+  competencyLevel: z.string().nullable(),
+  yearsOfExperience: z.number().nullable(),
+  description: z.string().nullable(),
+  displayOrder: z.number(),
+});
+
+export const skillListSchema = z.array(skillSchema);
+
+export const resumeProjectSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  type: z.string().nullable(),
+  status: z.string(),
+  description: z.string().nullable(),
+  highlights: z.array(z.string()),
+  repoUrl: z.string().nullable(),
+  demoUrl: z.string().nullable(),
+  startDate: z.string().nullable(),
+  endDate: z.string().nullable(),
+  displayOrder: z.number(),
+});
+
+export const resumeProjectListSchema = z.array(resumeProjectSchema);

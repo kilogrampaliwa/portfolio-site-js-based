@@ -19,13 +19,16 @@ vi.mock("next-intl/server", () => ({
 const experienceFixture: Experience[] = vi.hoisted(() => [
   {
     id: "1",
+    title: "Engineer",
     company: "Acme",
-    role: "Engineer",
+    employmentType: "full-time",
     location: "Remote",
+    locationType: "remote",
+    description: "Built things.",
+    achievements: [],
     startDate: "2020-01-01",
     endDate: null,
-    description: "Built things.",
-    orderIndex: 0,
+    displayOrder: 0,
   },
 ]);
 

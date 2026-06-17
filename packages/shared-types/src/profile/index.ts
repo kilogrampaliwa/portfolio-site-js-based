@@ -1,12 +1,14 @@
 export type { Database, Json, Tables } from "./database";
-export type { Certificate, Education, Experience, Language, Profile, Skill } from "./domain";
+export type { About, Experience, Qualification, ResumeProject, Skill } from "./domain";
 export {
-  certificateListSchema,
-  certificateSchema,
-  educationListSchema,
-  educationSchema,
+  aboutSchema,
   experienceListSchema,
   experienceSchema,
-  profileSchema,
+  qualificationListSchema,
+  qualificationSchema,
+  resumeProjectListSchema,
+  resumeProjectSchema,
+  skillListSchema,
+  skillSchema,
 } from "./schemas";
 export type { Locale, LocalizedText } from "../locale";

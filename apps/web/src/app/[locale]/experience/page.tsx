@@ -1,11 +1,9 @@
-import { getLocale, getTranslations } from "next-intl/server";
-import type { Locale } from "@portfolio/shared-types/locale";
+import { getTranslations } from "next-intl/server";
 import { getExperience } from "@/lib/apiProfile";
 import { Timeline } from "@/components/content/timeline";
 
 export default async function ExperiencePage() {
-  const locale = (await getLocale()) as Locale;
-  const [t, experience] = await Promise.all([getTranslations("ExperiencePage"), getExperience(locale)]);
+  const [t, experience] = await Promise.all([getTranslations("ExperiencePage"), getExperience()]);
 
   return (
     <section className="flex flex-1 flex-col gap-6 px-6 py-12">
@@ -13,12 +11,12 @@ export default async function ExperiencePage() {
       <Timeline
         items={experience.map((item) => ({
           id: item.id,
-          title: item.role,
+          title: item.title,
           subtitle: item.company,
           meta: item.location,
           startDate: item.startDate,
           endDate: item.endDate,
-          description: item.description,
+          description: item.description ?? "",
         }))}
         presentLabel={t("present")}
         emptyLabel={t("empty")}

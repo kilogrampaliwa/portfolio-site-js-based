@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# Post-deploy smoke test: hits the live apps/web, apps/api-profile, and
-# apps/api-site and confirms expected status codes.
+# Post-deploy smoke test: hits apps/web and apps/api-profile and confirms
+# expected status codes.
 #
 # Required env vars:
-#   WEB_URL            e.g. https://example.com
-#   PROFILE_API_URL    e.g. https://api.example.com
-#   SITE_API_URL       e.g. https://site-api.example.com
+#   WEB_URL            e.g. https://kilogrampaliwa.com
+#   PROFILE_API_URL    e.g. https://api.kilogrampaliwa.com
 #   PROFILE_API_KEY    a valid, non-revoked apps/api-profile API key
 set -euo pipefail
 
@@ -23,14 +22,12 @@ check() {
 
 : "${WEB_URL:?WEB_URL is required}"
 : "${PROFILE_API_URL:?PROFILE_API_URL is required}"
-: "${SITE_API_URL:?SITE_API_URL is required}"
 : "${PROFILE_API_KEY:?PROFILE_API_KEY is required}"
 
 check "apps/web homepage" "$WEB_URL/en" 200
 check "apps/api-profile health" "$PROFILE_API_URL/health" 200
-check "apps/api-site health" "$SITE_API_URL/health" 200
-check "apps/api-profile rejects missing API key" "$PROFILE_API_URL/profile" 401
-check "apps/api-profile accepts valid API key" "$PROFILE_API_URL/profile" 200 \
+check "apps/api-profile rejects missing API key" "$PROFILE_API_URL/about" 401
+check "apps/api-profile accepts valid API key" "$PROFILE_API_URL/about" 200 \
   -H "X-API-Key: $PROFILE_API_KEY"
 
 echo "All smoke checks passed."
