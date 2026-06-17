@@ -7,19 +7,18 @@ applications:
           commands:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
+            - export PNPM_HOME=/tmp/pnpm
+            - export PNPM_STORE_DIR=/tmp/pnpm-store
             - cd ../.. && pnpm install --frozen-lockfile
             - cd ../.. && pnpm --filter @portfolio/shared-types build
         build:
           commands:
             - pnpm build
       artifacts:
-        # Next.js 16 App Router (SSR) — Amplify Hosting auto-detects the
-        # Next.js framework from apps/web/package.json and deploys .next
-        # via its built-in Next.js SSR adapter.
         baseDirectory: .next
         files:
           - "**/*"
       cache:
         paths:
-          - ../../node_modules/**/*
+          - /tmp/pnpm-store/**/*
           - .next/cache/**/*
