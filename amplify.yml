@@ -8,11 +8,11 @@ applications:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
             - cd ../.. && pnpm install --frozen-lockfile
-            - cd ../.. && chmod 777 . && pnpm exec tsc -p packages/shared-types/tsconfig.json
+            - export npm_config_verify_deps_before_run=false
+            - cd ../.. && pnpm --config.verify-deps-before-run=false exec tsc -p packages/shared-types/tsconfig.json
         build:
           commands:
-            - chmod 777 ../..
-            - pnpm build
+            - pnpm --config.verify-deps-before-run=false build
       artifacts:
         baseDirectory: .next
         files:
