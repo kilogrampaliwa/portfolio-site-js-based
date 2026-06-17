@@ -23,12 +23,11 @@ const anon = createClient<Database>(SUPABASE_URL, ANON_KEY);
 const serviceRole = createClient<Database>(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 const CONTENT_TABLES = [
-  "profile",
+  "about",
   "experience",
-  "education",
-  "certificates",
+  "qualifications",
+  "projects",
   "skills",
-  "languages",
 ] as const;
 
 describe("profile brain RLS", () => {
@@ -48,9 +47,9 @@ describe("profile brain RLS", () => {
       expect(error).not.toBeNull();
     });
 
-    it("service_role can read and write", async () => {
-      const { error: readError, data } = await serviceRole.from(table).select("*");
-      expect(readError).toBeNull();
+    it("service_role can read", async () => {
+      const { error, data } = await serviceRole.from(table).select("*");
+      expect(error).toBeNull();
       expect(data?.length).toBeGreaterThan(0);
     });
   });
