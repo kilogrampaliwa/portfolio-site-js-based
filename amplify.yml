@@ -6,12 +6,12 @@ applications:
         preBuild:
           commands:
             - corepack enable
-            - corepack prepare pnpm@11.6.0 --activate
+            - corepack prepare pnpm@10.11.0 --activate
             - cd ../.. && pnpm install --frozen-lockfile
-            - npx -p typescript@5.9.3 tsc -p ../../packages/shared-types/tsconfig.json
+            - cd ../.. && pnpm --filter @portfolio/shared-types build
         build:
           commands:
-            - ./node_modules/.bin/next build
+            - pnpm build
       artifacts:
         baseDirectory: .next
         files:
