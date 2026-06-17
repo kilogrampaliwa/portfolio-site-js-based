@@ -13,10 +13,10 @@ function synth() {
 }
 
 describe("ApiProfileStack", () => {
-  it("creates an ARM64 Node.js 20 Lambda function", () => {
+  it("creates an ARM64 Node.js 22 Lambda function", () => {
     const template = synth();
     template.hasResourceProperties("AWS::Lambda::Function", {
-      Runtime: "nodejs20.x",
+      Runtime: "nodejs22.x",
       Architectures: ["arm64"],
       Handler: "index.handler",
     });
