@@ -8,9 +8,10 @@ applications:
             - corepack enable
             - corepack prepare pnpm@11.6.0 --activate
             - cd ../.. && pnpm install --frozen-lockfile
-            - cd ../.. && pnpm exec tsc -p packages/shared-types/tsconfig.json
+            - cd ../.. && chmod 777 . && pnpm exec tsc -p packages/shared-types/tsconfig.json
         build:
           commands:
+            - chmod 777 ../..
             - pnpm build
       artifacts:
         baseDirectory: .next
