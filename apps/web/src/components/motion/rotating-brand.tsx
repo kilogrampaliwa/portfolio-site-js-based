@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const NAMES = ["Filip Ciąder", "kilogrampaliwa"] as const;
-const INTERVAL_MS = 2000;
+const INTERVAL_MS = 4000;
 
 export function RotatingBrand({ className }: { className?: string }) {
   const [index, setIndex] = useState(0);
@@ -24,7 +24,7 @@ export function RotatingBrand({ className }: { className?: string }) {
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
           className="inline-block"
         >
           {NAMES[index]}
