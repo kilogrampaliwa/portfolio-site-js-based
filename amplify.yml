@@ -12,6 +12,7 @@ applications:
             - pnpm --filter @portfolio/shared-types build
         build:
           commands:
+            - echo "PROFILE_API_KEY=$PROFILE_API_KEY" >> apps/web/.env.production
             - pnpm --filter @portfolio/web build
       artifacts:
         baseDirectory: apps/web/.next
