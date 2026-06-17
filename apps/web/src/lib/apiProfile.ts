@@ -25,14 +25,18 @@ async function fetchProfileApi(path: string): Promise<unknown> {
   const apiKey = process.env.PROFILE_API_KEY;
 
   if (!baseUrl || !apiKey) {
+    console.error(`[apiProfile] missing env: baseUrl=${!!baseUrl} apiKey=${!!apiKey}`);
     return null;
   }
 
-  const response = await fetch(new URL(path, baseUrl), {
+  const url = new URL(path, baseUrl);
+  const response = await fetch(url, {
     headers: { "X-API-Key": apiKey },
+    cache: "no-store",
   });
 
   if (!response.ok) {
+    console.error(`[apiProfile] ${url} returned ${response.status}`);
     return null;
   }
 
