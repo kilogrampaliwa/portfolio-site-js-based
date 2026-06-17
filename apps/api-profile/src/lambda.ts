@@ -5,8 +5,9 @@ let proxyPromise: Promise<ReturnType<typeof awsLambdaFastify>> | undefined;
 
 function getProxy(): Promise<ReturnType<typeof awsLambdaFastify>> {
   proxyPromise ??= buildApp().then(async (app) => {
+    const proxy = awsLambdaFastify(app);
     await app.ready();
-    return awsLambdaFastify(app);
+    return proxy;
   });
   return proxyPromise;
 }
