@@ -88,5 +88,5 @@ jobs:
         env:
           DOMAIN_NAME: example.com
           HOSTED_ZONE_ID: Z00000000000000EXAMPLE
-          PROFILE_SUPABASE_SECRET_ARN: "arn:aws:secretsmanager:eu-central-1:000000000000:secret:portfolio/profile/supabase-placeholder"
+          PROFILE_SUPABASE_SECRET_ARN: "arn:aws:secretsmanager:eu-central-1:000000000000:secret:portfolio/profile/supabase-AbCdEf"
           PROFILE_ALLOWED_ORIGINS: "https://example.com"
