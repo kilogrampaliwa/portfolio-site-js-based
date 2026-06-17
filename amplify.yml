@@ -11,7 +11,7 @@ applications:
             - cd ../.. && pnpm --filter @portfolio/shared-types build
         build:
           commands:
-            - pnpm build
+            - cd $CODEBUILD_SRC_DIR/apps/web && pnpm build
       artifacts:
         baseDirectory: .next
         files:
